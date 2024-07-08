@@ -9,6 +9,7 @@ export interface APIResponse {
         message: string;
         code?: string | number;
 
-    }>
+    }>,
+    token?: string
 
 };
