@@ -2,7 +2,7 @@ export interface APIResponse {
 
     timestamp?: number,
     message: string,
-    code?: number,
+    code: number,
     errors?: Array<{
 
         field: string;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const RegisterFields = z.object({
+export const RegisterFields = z.object({
 
     first_name: z.string().trim()
         .min(1, { message: 'First name is required'} )
@@ -40,4 +40,4 @@ const RegisterFields = z.object({
 
 }).refine( data => data.password === data.confirm_password, { message: 'Passwords do not match' } );
 
-type RegisterFields = z.infer<typeof RegisterFields>;
+export type RegisterFields = z.infer<typeof RegisterFields>;
