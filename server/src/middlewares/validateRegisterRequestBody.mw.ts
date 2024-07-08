@@ -5,6 +5,8 @@ import {
   SanitizeOptions,
 } from '../types/sanitizeTypes';
 import { APIResponse } from '../types/ResponseTypes';
+import { z, ZodError } from 'zod';
+import { RegisterUserFields } from '../types/validationTypes';
 
 const validateRegisterRequestBody = [
   // Sanitize the request body
@@ -76,6 +78,39 @@ const validateRegisterRequestBody = [
     if (response.errors?.length !== 0) {
       res.status(400).json(response);
       return;
+    }
+
+    next();
+  },
+  // Validate
+  (req: Request, res: Response, next: NextFunction): void => {
+    try {
+      const {
+        first_name,
+        last_name,
+        username,
+        email,
+        password,
+        confirm_password,
+      }: RegisterUserFields = RegisterUserFields.parse(req.body);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        // Consturct Error response
+        const response: APIResponse = {
+          timestamp: Date.now(),
+          message: 'Validation Error',
+          code: 400,
+          errors: error.errors.map((err) => ({
+            field: err.path.join('.'),
+            message: err.message,
+            code: err.code,
+          })),
+        };
+
+        // Send error response
+        res.status(400).json(response);
+        return;
+      }
     }
 
     next();
