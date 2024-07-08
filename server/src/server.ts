@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import logger from './utils/logger';
 
 // Load the environment variables from the .env file
 dotenv.config();
@@ -20,18 +21,17 @@ const PORT: number = parseInt(process.env.PORT ?? '5000', 10);
 mongoose
   .connect(MONGO_URI)
   .then(() => {
-    // TODO: Use custom logger to log connection status
-    console.log('Connected to MongoDB');
+    logger('INFO', 'Connected to MongoDB', true);
 
     // Start the server
     app.listen(PORT, () => {
-      // TODO: Use custom logger to log server status
-      console.log(`Server is listening on http://localhost:${PORT}`);
+      logger('INFO', `Server is listening at http://localhost:${PORT}`, true);
     });
   })
   .catch((error) => {
-    // TODO: Use custom logger for connection errors
-    console.error(
-      `Something went wrong when connecting to MongoDB -- ${error}`
+    logger(
+      'ERROR',
+      `Something went wrong while connecting to the database: ${error}`,
+      true
     );
   });
