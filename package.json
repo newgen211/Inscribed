@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "express-validator": "^7.1.0",
+    "sanitize-html": "^2.13.0"
+  },
+  "devDependencies": {
+    "@types/express-validator": "^3.0.0",
+    "@types/sanitize-html": "^2.11.0"
+  }
+}
