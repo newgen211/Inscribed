@@ -66,7 +66,16 @@ const registerHandler = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json(response);
     return;
-  } catch (error) {}
+  } catch (error) {
+    const response: APIResponse = {
+      timestamp: Date.now(),
+      message: 'Internal Server Error',
+      code: 500,
+    };
+
+    res.status(500).json(response);
+    return;
+  }
 };
 
 export default registerHandler;
