@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import sanitizeRequest from './middlewares/sanitzeRequest';
 
 // Load the environment variables from the .env file
 dotenv.config();
@@ -12,6 +13,7 @@ const app: Express = express();
 app.use(express.json());
 
 // Routes
+app.post('/this-is-a-test-route-remove-before-deployment', sanitizeRequest, (req, res) => {res.status(200).send('Success')});
 
 // Connect to the database and start the server
 const MONGO_URI: string = process.env.MONGO_URI ?? '';
