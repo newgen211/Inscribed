@@ -1,0 +1,10 @@
+# Directories
+logs
+node_modules
+build
+dist
+
+# Files
+.env
+*.logs
+.DS_Store
