@@ -5,6 +5,7 @@ import { APIResponse } from '../../types/responses/APIResponse';
 import { RegisterFields } from '../../schemas/auth/RegisterFields';
 import { User } from '../../model/User';
 import { UserDocument } from '../../types/models/Users';
+import sendVerifyAccountEmail from '../../services/auth/sendVerifyAccountEmail';
 
 const registerController = async (req:Request, res:Response): Promise<void> => {
 
@@ -39,6 +40,9 @@ const registerController = async (req:Request, res:Response): Promise<void> => {
         // Create the new user document and save to MongoDB
         const user: UserDocument = new User({ first_name, last_name, username, email, password:hash });
         await user.save();
+
+        // Send a verify account email
+        await sendVerifyAccountEmail(user.id, user.email);
 
         // Return a success response
         const response: APIResponse = {
