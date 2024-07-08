@@ -111,16 +111,16 @@ const validateRegisterRequestBody = [
         res.status(400).json(response);
         return;
       }
+
+      const response: APIResponse = {
+        timestamp: Date.now(),
+        message: 'Internal Server Error',
+        code: 500,
+      };
+
+      res.status(500).json(response);
+      return;
     }
-
-    const response: APIResponse = {
-      timestamp: Date.now(),
-      message: 'Internal Server Error',
-      code: 500,
-    };
-
-    res.status(500).json(response);
-    return;
 
     next();
   },
