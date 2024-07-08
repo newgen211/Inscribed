@@ -1,39 +1,38 @@
-import express from 'express';
-import dotenv from 'dotenv';
+import express, { Express } from 'express';
+import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import logger from './utils/logger';
-import authRoutes from './routes/authRoutes';
+import sanitizeRequest from './middlewares/sanitzeRequest';
+import authRouter from './routes/authRoutes';
 
 // Load the environment variables from the .env file
 dotenv.config();
 
-// Initizalize the express app
-const app = express();
+// Initialize express application
+const app: Express = express();
 
-// Middlewares
+// Middleware
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.post('/this-is-a-test-route-remove-before-deployment', sanitizeRequest, (req, res) => {res.status(200).send('Success')});
+app.use('/api/auth', authRouter);
 
 // Connect to the database and start the server
 const MONGO_URI: string = process.env.MONGO_URI ?? '';
 const PORT: number = parseInt(process.env.PORT ?? '5000', 10);
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    logger('INFO', 'Connected to MongoDB', true);
+mongoose.connect(MONGO_URI)
+.then(() => {
 
-    // Start the server
+    console.log('Connected to MongoDB');
+
     app.listen(PORT, () => {
-      logger('INFO', `Server is listening at http://localhost:${PORT}`, true);
+        console.log(`Server is listening on port ${PORT}`);
     });
-  })
-  .catch((error) => {
-    logger(
-      'ERROR',
-      `Something went wrong while connecting to the database: ${error}`,
-      true
-    );
-  });
+
+})
+.catch((error) => {
+
+    console.error(`ERROR: Something went wrong while connecting to MongoDB : [${error}]`);
+
+});

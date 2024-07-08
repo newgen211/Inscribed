@@ -1,5 +1,5 @@
 {
-  "name": "inscribed_server",
+  "name": "server",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -12,20 +12,23 @@
   "author": "Evan Kasky",
   "license": "ISC",
   "description": "",
-  "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/mongoose": "^5.11.97",
-    "nodemon": "^3.1.4",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.3"
-  },
   "dependencies": {
-    "@types/sanitize-html": "^2.11.0",
     "argon2": "^0.40.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.4.5",
+    "nodemailer": "^6.9.14",
     "sanitize-html": "^2.13.0",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.97",
+    "@types/nodemailer": "^6.4.15",
+    "@types/sanitize-html": "^2.11.0",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
   }
 }

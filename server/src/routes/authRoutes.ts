@@ -1,10 +1,9 @@
 import express from 'express';
-import registerHandler from '../handlers/registerHandler';
-import validateRegisterRequestBody from '../middlewares/validateRegisterRequestBody.mw';
+import sanitizeRequest from '../middlewares/sanitzeRequest';
+import registerController from '../controllers/auth/registerController';
 
-const authRoutes = express.Router();
+const authRouter = express.Router();
 
-authRoutes.get('/test', (req, res) => res.send('Test Route'));
-authRoutes.post('/register', validateRegisterRequestBody, registerHandler);
+authRouter.post('/register', sanitizeRequest, registerController);
 
-export default authRoutes;
+export default authRouter;
