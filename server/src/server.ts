@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import sanitizeRequest from './middlewares/sanitzeRequest';
 import authRouter from './routes/authRoutes';
+import cors from 'cors';
 
 // Load the environment variables from the .env file
 dotenv.config();
@@ -12,6 +13,7 @@ const app: Express = express();
 
 // Middleware
 app.use(express.json());
+app.use(cors());
 
 // Routes
 app.post('/this-is-a-test-route-remove-before-deployment', sanitizeRequest, (req, res) => {res.status(200).send('Success')});

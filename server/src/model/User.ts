@@ -13,7 +13,11 @@ const UserSchema = new Schema<UserDocument>({
     locked: { type: Boolean, default: false },
     login_attempts: { type: Number, default: 0 },
     created_at: { type: Date, default: Date.now() },
-    last_login: { type: Date, default: null }
+    last_login: { type: Date, default: null },
+    terms_of_services_accepted: { type: Boolean, default: false },
+    terms_of_services_id: { type: Number, default: null },
+    terms_of_services_timestamp: { type: Date, default: null }
+     
 
 });
 

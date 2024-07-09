@@ -36,7 +36,11 @@ export const RegisterFields = z.object({
 
     confirm_password: z.string().trim()
         .min(8, { message: 'Confirm password must be at least 8 characters long' })
-        .max(64, { message: 'Confirm password cannot exceed 64 characters in length' })
+        .max(64, { message: 'Confirm password cannot exceed 64 characters in length' }),
+        
+    terms: z.boolean().refine((val) => val === true, {
+        message: 'You must accept the terms and services',
+    }),
 
 }).refine( data => data.password === data.confirm_password, { message: 'Passwords do not match' } );
 

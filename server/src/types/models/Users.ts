@@ -11,7 +11,10 @@ interface UserFields {
     locked: boolean;
     login_attempts: number;
     created_at: Date,
-    last_login: Date
+    last_login: Date,
+    terms_of_services_accepted: boolean,
+    terms_of_services_id: Number,
+    terms_of_services_timestamp: Date
 
 };
 

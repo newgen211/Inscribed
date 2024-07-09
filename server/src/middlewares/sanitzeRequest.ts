@@ -4,7 +4,7 @@ import { SanitizeOptions } from '../types/sanitize/SanitizeOptions';
 import sanitizeHtml from 'sanitize-html';
 
 // Blacklist array: These are fields we do not want to sanitize
-const blacklist: string[] = ["password", "confirm_password"];
+const blacklist: string[] = ["password", "confirm_password", "terms"];
 
 // define sanitization parameters
 const sanitizeOptions: SanitizeOptions = {

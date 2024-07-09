@@ -12,7 +12,7 @@ const registerController = async (req:Request, res:Response): Promise<void> => {
     try {
 
         // Use the Zod Schema to validate the register request body
-        const { first_name, last_name, username, email, password, confirm_password }: RegisterFields = RegisterFields.parse(req.body);
+        const { first_name, last_name, username, email, password, confirm_password, terms}: RegisterFields = RegisterFields.parse(req.body);
 
         // Verify the provided email and/or username is not already in use
         const findUser = await User.findOne({$or: [{ email },{ username }]});
@@ -38,7 +38,7 @@ const registerController = async (req:Request, res:Response): Promise<void> => {
         const hash = await argon2.hash(password);
 
         // Create the new user document and save to MongoDB
-        const user: UserDocument = new User({ first_name, last_name, username, email, password:hash });
+        const user: UserDocument = new User({ first_name, last_name, username, email, password:hash, terms_of_services_accepted:terms, terms_of_services_timestamp: Date.now(), terms_of_services_id: parseInt(process.env.TERMS_OF_SERVICE_ID as string, 10) });
         await user.save();
 
         // Send a verify account email
