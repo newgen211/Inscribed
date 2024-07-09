@@ -35,7 +35,11 @@ export const registrationSchema = z.object({
         .max(64, { message: 'Password cannot exceed 64 characters in length' }),
 
     confirm_password: z.string().trim()
-        .max(64, { message: 'Confirm password cannot exceed 64 characters in length' })
+        .max(64, { message: 'Confirm password cannot exceed 64 characters in length' }),
+    
+    terms: z.boolean().refine((val) => val === true, {
+        message: 'You must accept the terms and services',
+    }),
 
 }).refine((data) => data.password === data.confirm_password, {
     message: 'Passwords do not match',

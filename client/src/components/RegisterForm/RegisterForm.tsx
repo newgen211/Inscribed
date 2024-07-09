@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Container, Grid, IconButton, InputAdornment, Link, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, IconButton, InputAdornment, Link, TextField, Typography } from '@mui/material';
 import { Link as ReactRouterDomLink } from 'react-router-dom';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { useCallback, useState } from 'react';
@@ -21,7 +21,7 @@ const RegisterForm: React.FC = () => {
     const { handleSubmit, control, formState: { errors } } = useForm({
         mode: 'all',
         defaultValues: {
-            first_name: '', last_name: '', username: '', email: '', password: '', confirm_password: ''
+            first_name: '', last_name: '', username: '', email: '', password: '', confirm_password: '', terms: false
         },
         resolver: zodResolver(registrationSchema),   
     });
@@ -236,6 +236,22 @@ const RegisterForm: React.FC = () => {
                         </Grid>
 
                     </Grid>
+
+                    <Controller
+                        name='terms'
+                        control={control}
+                        render={({ field }) => (
+                            <FormControlLabel
+                                control={<Checkbox {...field} color="primary" />}
+                                label="Accept Terms and Services"
+                            />
+                        )}
+                    />
+                    {errors.terms && (
+                        <Typography variant="body2" color="error">
+                            {errors.terms.message}
+                        </Typography>
+                    )}
 
                     <Button
                         type='submit'
