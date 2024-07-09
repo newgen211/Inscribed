@@ -18,7 +18,7 @@ const RegisterForm: React.FC = () => {
     const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
     /* Form handler */
-    const { handleSubmit, control, formState: { errors } } = useForm({
+    const { handleSubmit, control, formState: { errors, isValid } } = useForm({
         mode: 'all',
         defaultValues: {
             first_name: '', last_name: '', username: '', email: '', password: '', confirm_password: '', terms: false
@@ -258,6 +258,7 @@ const RegisterForm: React.FC = () => {
                         fullWidth
                         variant='contained'
                         sx={{my: 2}}
+                        disabled={!isValid}
                     >
                         Sign Up
                     </Button>
