@@ -4,7 +4,6 @@ import { ZodError } from 'zod';
 import { APIResponse } from '../../types/responses/APIResponse';
 import { User } from '../../model/User';
 import * as argon2 from 'argon2';
-import { SessionToken } from '../../types/tokens/SessionToken';
 import generateSessionToken from '../../utils/generateSessionToken';
 
 
