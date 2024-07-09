@@ -5,6 +5,7 @@ import verifyAccountController from '../controllers/auth/verifyAccountController
 import loginController from '../controllers/auth/loginController';
 import requestPasswordResetController from '../controllers/auth/requestPasswordResetController';
 import redirectToPasswordResetController from '../controllers/auth/redirectToPasswordResetController';
+import resetPasswordController from '../controllers/auth/resetPasswordController';
 
 const authRouter = express.Router();
 
@@ -13,5 +14,6 @@ authRouter.get('/verify-account/:token', sanitizeRequest, verifyAccountControlle
 authRouter.post('/login', sanitizeRequest, loginController);
 authRouter.post('/request-password-reset', sanitizeRequest, requestPasswordResetController);
 authRouter.get('/redirect-to-password-reset/:token', redirectToPasswordResetController);
+authRouter.post('/reset-password/:token', resetPasswordController);
 
 export default authRouter;
