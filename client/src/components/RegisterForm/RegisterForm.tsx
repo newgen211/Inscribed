@@ -18,6 +18,9 @@ const RegisterForm: React.FC = () => {
     const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
     /* Form handler */
+
+    const [isLoading, setLoading] = useState(false);
+
     const { handleSubmit, control, formState: { errors, isValid } } = useForm({
         mode: 'all',
         defaultValues: {
@@ -29,7 +32,20 @@ const RegisterForm: React.FC = () => {
     /* Form Handler */
     const handleRegisterSubmit = useCallback( (values: RegistrationSchema) => {
 
-        window.alert(JSON.stringify(values, null, 4));
+        setLoading(true);
+
+        try {
+
+            window.alert(JSON.stringify(values, null, 4));
+
+        }
+        catch(error) {
+            console.error('Error during submission:', error);
+        }
+        finally {
+            setLoading(false);
+        }
+
 
     },[]);
 
@@ -258,7 +274,7 @@ const RegisterForm: React.FC = () => {
                         fullWidth
                         variant='contained'
                         sx={{my: 2}}
-                        disabled={!isValid}
+                        disabled={!isValid || isLoading}
                     >
                         Sign Up
                     </Button>
