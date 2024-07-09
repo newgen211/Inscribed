@@ -1,8 +1,37 @@
-import { Avatar, Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Grid, IconButton, InputAdornment, Link, TextField, Typography } from '@mui/material';
 import { Link as ReactRouterDomLink } from 'react-router-dom';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import { useCallback, useState } from 'react';
+import { registrationSchema, RegistrationSchema } from './schema';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
 
 const RegisterForm: React.FC = () => {
+
+    /* Show password */
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const toggleShowPassword = () => setShowPassword(!showPassword);
+    const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+
+    /* Form handler */
+    const { handleSubmit, control, formState: { errors } } = useForm({
+        mode: 'all',
+        defaultValues: {
+            first_name: '', last_name: '', username: '', email: '', password: '', confirm_password: ''
+        },
+        resolver: zodResolver(registrationSchema),   
+    });
+
+    /* Form Handler */
+    const handleRegisterSubmit = useCallback( (values: RegistrationSchema) => {
+
+        window.alert(JSON.stringify(values, null, 4));
+
+    },[]);
 
     return (
 
@@ -30,90 +59,179 @@ const RegisterForm: React.FC = () => {
                 <Typography component='h1' variant='h5'>Sign Up</Typography>
 
                 {/* Sign Up Form */}
-                <Box component='form' noValidate sx={{mt: 3}}>
+                <Box component='form' onSubmit={handleSubmit(handleRegisterSubmit)} noValidate sx={{mt: 3}}>
 
                     <Grid container spacing={2}>
 
                         <Grid item xs={12} sm={6}>
 
-                            <TextField 
-                                required
-                                fullWidth
-                                id='first_name'
-                                label='First Name'
+                        <Controller
                                 name='first_name'
-                                autoComplete="given-name"
-                                autoFocus
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField 
+                                        {...field}
+                                        required
+                                        fullWidth
+                                        id='first_name'
+                                        label='First Name'
+                                        autoComplete="given-name"
+                                        autoFocus
+                                        error={!!errors.first_name}
+                                        helperText={errors.first_name?.message}
+                                    />
+                                )}
                             />
+
 
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
 
-                            <TextField 
-                                required
-                                fullWidth
-                                id='last_name'
-                                label='Last Name'
-                                name='last_name'
-                                autoComplete="family-name"
-                            />
+                        <Controller
+                            name='last_name'
+                            control={control}
+                            render={({field}) => (
+
+                                <TextField
+                                    {...field}
+                                    required
+                                    fullWidth
+                                    id='last_name'
+                                    label='Last Name'
+                                    name='last_name'
+                                    autoComplete="family_name"
+                                    error={!!errors.last_name}
+                                    helperText={errors.last_name?.message}
+                                />
+
+                            )}
+                        />
 
                         </Grid>
 
                         <Grid item xs={12}>
 
-                            <TextField 
-                                required
-                                fullWidth
-                                id='username'
-                                label='Username'
+                        <Controller
                                 name='username'
-                                autoComplete="username"
+                                control={control}
+                                render={({field}) => (
+
+                                    <TextField
+                                        {...field}
+                                        required
+                                        fullWidth
+                                        id='username'
+                                        label='Username'
+                                        name='username'
+                                        autoComplete="username"
+                                        error={!!errors.username}
+                                        helperText={errors.username?.message}
+                                    />
+
+                                )}
                             />
 
                         </Grid>
 
                         <Grid item xs={12}>
 
-                            <TextField 
-                                required
-                                fullWidth
-                                id='email'
-                                label='Email Address'
-                                name='email'
-                                autoComplete="email"
-                                type='email'
-                            />
+                        <Controller
+                            name='email'
+                            control={control}
+                            render={({field}) => (
+
+                                <TextField
+                                    {...field}
+                                    required
+                                    fullWidth
+                                    id='email'
+                                    label='Email Address'
+                                    name='email'
+                                    autoComplete="email"
+                                    error={!!errors.email}
+                                    helperText={errors.email?.message}
+                                    
+                                />
+
+                            )}
+                        />
 
                         </Grid>
 
                         <Grid item xs={12}>
 
-                            <TextField 
-                                required
-                                fullWidth
-                                id='password'
-                                label='Password'
-                                name='password'
-                                autoComplete="password"
-                                type='password'
-                            />
+                        <Controller
+                            name='password'
+                            control={control}
+                            render={({field}) => (
+
+                                <TextField
+                                    {...field}
+                                    required
+                                    fullWidth
+                                    id='password'
+                                    label='Password'
+                                    name='password'
+                                    autoComplete="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={toggleShowPassword}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+
+                            )}
+                        />
 
                         </Grid>
 
                         <Grid item xs={12}>
 
-                            <TextField 
-                                margin='normal'
-                                required
-                                fullWidth
-                                id='confirm_password'
-                                label='Confirm Password'
-                                name='confirm_password'
-                                autoComplete="confirm_password"
-                                type='password'
-                            />
+                        <Controller
+                            name='confirm_password'
+                            control={control}
+                            render={({field}) => (
+
+                                <TextField
+                                    {...field}
+                                    required
+                                    fullWidth
+                                    id='confirm_password'
+                                    label='Confirm Password'
+                                    name='confirm_password'
+                                    autoComplete="confirm_password"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    error={!!errors.confirm_password}
+                                    helperText={errors.confirm_password?.message}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle confirm password visibility"
+                                                    onClick={toggleShowConfirmPassword}
+                                                    edge="end"
+                                                >
+                                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+
+                            )}
+                        />
 
                         </Grid>
 
