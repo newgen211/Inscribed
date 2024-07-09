@@ -2,9 +2,79 @@ import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, Link,
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import Copyright from '../components/Copyright';
 import { Link as ReactRouterDomLink } from 'react-router-dom';
+import { boolean, z } from 'zod';
+import axios from 'axios';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { redirect } from 'react-router-dom';
 
-export default function SignupPage() {
+// Define RegisterSchema
+const RegisterFormData = z.object({
 
+    first_name: z.string().trim()
+        .min(1, { message: 'First name is required'} )
+        .max(50, { message: 'First name cannot exceed 50 characters in length' })
+        .regex(/^[a-zA-Z\s'-]+$/, { message: 'First name can only contain letters, spaces, hypens, and apostrophes' })
+        .transform((name) => name.replace(/\s+/g, ' '))
+        .transform((name) => name.charAt(0).toUpperCase() + name.slice(1))
+        .refine((name) => name.trim().length > 0, { message: 'First name cannot be just whitespace' }),
+
+    last_name: z.string().trim()
+        .min(1, { message: 'Last name is required'} )
+        .max(50, { message: 'Last name cannot exceed 50 characters in length' })
+        .regex(/^[a-zA-Z\s'-]+$/, { message: 'Last name can only contain letters, spaces, hypens, and apostrophes' })
+        .transform((name) => name.replace(/\s+/g, ' '))
+        .transform((name) => name.charAt(0).toUpperCase() + name.slice(1))
+        .refine((name) => name.trim().length > 0, { message: 'Last name cannot be just whitespace' }),
+    
+    username: z.string().trim()
+        .min(1, { message: 'Username required' })
+        .max(50, { message: 'Username cannot exceed 50 characters in length' })
+        .regex(/^[a-zA-Z][a-zA-Z0-9-_]{0,49}$/, { message: 'Username must start with a letter and can only contain letters, numbers, hypens, and underscores' })
+        .refine((name) => name.trim().length > 0, { message: 'Username cannot be just whitespace' }),
+
+    email: z.string().trim()
+        .min(1, { message: 'Email address is required' })
+        .max(255, { message: 'Email address cannot exceed 50 characters in length' })
+        .email({ message: 'Invalid email address' }),
+
+    password: z.string().trim()
+        .min(8, { message: 'Password must be at least 8 characters long' })
+        .max(64, { message: 'Password cannot exceed 64 characters in length' })
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&_-]{8,}$/, { message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character' }),
+
+    confirm_password: z.string().trim()
+        .min(8, { message: 'Confirm password must be at least 8 characters long' })
+        .max(64, { message: 'Confirm password cannot exceed 64 characters in length' }),
+
+}).refine( data => data.password === data.confirm_password, { message: 'Passwords do not match' } );
+
+type RegisterFormData = z.infer<typeof RegisterFormData>;
+
+
+const SignupPage: React.FC = () => {
+
+    /* State for input fields */
+    const [registerFormData, setRegisterFormData] = useState<RegisterFormData>({ first_name : '', last_name : '', username : '', email : '', password : '', confirm_password : '' });
+
+    /* State to keep track of fields the user has interacted with */
+    const [touched, setTouched] = useState<{ [key: string]: boolean }>({ first_name: false, last_name: false, username: false, email: false, password: false, confirm_password: false });
+
+    /* State to hold client/server side validation errors */
+    const [errors, setErrors] = useState<z.ZodIssue[]>([]);
+
+    /* Handle the form submit */
+    const handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
+
+    };
+
+    /* Validate the input fields against zod schema */
+    const validateInput = () => {
+
+    };
+
+    /*  */
+    
+    
     return (
 
         <Container component='main' maxWidth="xs">
@@ -31,7 +101,7 @@ export default function SignupPage() {
                 <Typography component='h1' variant='h5'>Sign Up</Typography>
 
                 {/* Sign Up Form */}
-                <Box component='form' noValidate sx={{mt: 3}}>
+                <Box component='form' onSubmit={handleSubmit} noValidate sx={{mt: 3}}>
 
                     <Grid container spacing={2}>
 
@@ -44,6 +114,7 @@ export default function SignupPage() {
                                 label='First Name'
                                 name='first_name'
                                 autoComplete="given-name"
+                                value={registerFormData.first_name}
                                 autoFocus
                             />
 
@@ -57,6 +128,7 @@ export default function SignupPage() {
                                 id='last_name'
                                 label='Last Name'
                                 name='last_name'
+                                value={registerFormData.last_name}
                                 autoComplete="family-name"
                             />
 
@@ -70,6 +142,7 @@ export default function SignupPage() {
                                 id='username'
                                 label='Username'
                                 name='username'
+                                value={registerFormData.username}
                                 autoComplete="username"
                             />
 
@@ -85,6 +158,7 @@ export default function SignupPage() {
                                 name='email'
                                 autoComplete="email"
                                 type='email'
+                                value={registerFormData.email}
                             />
 
                         </Grid>
@@ -99,6 +173,7 @@ export default function SignupPage() {
                                 name='password'
                                 autoComplete="password"
                                 type='password'
+                                value={registerFormData.password}
                             />
 
                         </Grid>
@@ -114,16 +189,12 @@ export default function SignupPage() {
                                 name='confirm_password'
                                 autoComplete="confirm_password"
                                 type='password'
+                                value={registerFormData.confirm_password}
                             />
 
                         </Grid>
 
                     </Grid>
-
-                    <FormControlLabel 
-                        control={<Checkbox value='terms-and-services' color='primary' />}
-                        label='Agree to Terms and Services'
-                    />
 
                     <Button
                         type='submit'
@@ -161,3 +232,5 @@ export default function SignupPage() {
     );
 
 }
+
+export default SignupPage;
