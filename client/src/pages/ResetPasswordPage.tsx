@@ -4,7 +4,7 @@ import { Link as ReactRouterDomLink } from 'react-router-dom';
 import Copyright from '../components/Copyright';
 
 
-export default function ForgotpasswordPage() {
+export default function ResetPasswordPage() {
 
     return (
 
@@ -29,21 +29,31 @@ export default function ForgotpasswordPage() {
                     <AlternateEmailIcon />
                 </Avatar>
 
-                <Typography component='h1' variant='h5'>Forgot Password</Typography>
+                <Typography component='h1' variant='h5'>Reset Password</Typography>
                 
-                {/* Forgot Password Form */}
+                {/* Reset Password Form */}
                 <Box component='form' noValidate sx={{ mt: 1 }}>
 
-                    <TextField
+                    <TextField 
                         margin='normal'
                         required
                         fullWidth
-                        id='email'
-                        label='Email'
-                        name='email'
-                        autoComplete='email'
-                        type='email'
-                        autoFocus
+                        id='password'
+                        label='Password'
+                        name='password'
+                        type='password'
+                        autoComplete='password'
+                    />
+
+                    <TextField 
+                        margin='normal'
+                        required
+                        fullWidth
+                        id='confrim_password'
+                        label='Confirm Password'
+                        name='confirm_password'
+                        type='confirm_password'
+                        autoComplete='confirm_password'
                     />
 
                     <Button
@@ -52,7 +62,7 @@ export default function ForgotpasswordPage() {
                         variant='contained'
                         sx={{my: 2}}
                     >
-                        Request Password Reset
+                        Reset Password
                     </Button>
 
                     <Grid container>
@@ -60,12 +70,6 @@ export default function ForgotpasswordPage() {
                         <Grid item xs>
                             <Link component={ReactRouterDomLink} to='/' variant='body2'>
                                 Back to login
-                            </Link>
-                        </Grid>
-
-                        <Grid item>
-                            <Link component={ReactRouterDomLink} to='/sign-up' variant='body2'>
-                                Dont't have an account? Sign Up
                             </Link>
                         </Grid>
 
