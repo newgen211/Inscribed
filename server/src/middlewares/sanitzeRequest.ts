@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { APIResponse } from '../types/responses/APIResponse';
-import { SanitizeOptions } from '../types/sanitize/sanitizeOptions';
+import { SanitizeOptions } from '../types/sanitize/SanitizeOptions';
 import sanitizeHtml from 'sanitize-html';
 
 // Blacklist array: These are fields we do not want to sanitize
