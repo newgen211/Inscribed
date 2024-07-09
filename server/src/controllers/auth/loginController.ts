@@ -30,6 +30,20 @@ const loginController = async (req:Request, res:Response, next:NextFunction): Pr
 
         }
 
+        // Check if the user if verified
+        if(!user.verifed) {
+
+            const response: APIResponse = {
+                timestamp: Date.now(),
+                message: 'Account is not verifed',
+                code: 401
+            };
+
+            res.status(response.code).json(response);
+            return;
+
+        }
+
         // Check to see if the user's account is locked
         if(user.locked) {
 
