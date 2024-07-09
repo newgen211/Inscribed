@@ -62,19 +62,36 @@ const SignupPage: React.FC = () => {
     /* State to hold client/server side validation errors */
     const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
+    /* Function to handle input change */
+    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+
+        const { name, value } = event.target;
+
+        // Set the proper field in the registerFormData to the updated value
+        setRegisterFormData({ ...registerFormData, [name]: value });
+
+    };
+
+    /* Function to handle Input Blur */
+    const handleBlur = (event: ChangeEvent<HTMLInputElement>): void => {
+
+        const { name, value } = event.target;
+
+        // Set the proper field in the touched to the updated value if the user interacts
+        setTouched({ ...touched, [name]: true });
+
+    };
+
+    /* Function to validate a input field */
+    const validateField = (name: string, value: string): string => {
+        return '';
+    };
+
     /* Handle the form submit */
-    const handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit = (event: ChangeEvent<HTMLInputElement>): void => {
 
     };
 
-    /* Validate the input fields against zod schema */
-    const validateInput = () => {
-
-    };
-
-    /*  */
-    
-    
     return (
 
         <Container component='main' maxWidth="xs">
@@ -101,7 +118,7 @@ const SignupPage: React.FC = () => {
                 <Typography component='h1' variant='h5'>Sign Up</Typography>
 
                 {/* Sign Up Form */}
-                <Box component='form' onSubmit={handleSubmit} noValidate sx={{mt: 3}}>
+                <Box component='form' noValidate sx={{mt: 3}}>
 
                     <Grid container spacing={2}>
 
