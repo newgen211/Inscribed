@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+const path = require('path');
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import sanitizeRequest from './middlewares/sanitzeRequest';
@@ -18,6 +19,14 @@ app.use(cors());
 // Routes
 app.post('/this-is-a-test-route-remove-before-deployment', sanitizeRequest, (req, res) => {res.status(200).send('Success')});
 app.use('/api/auth', authRouter);
+
+// Serve static files from the React frontend
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
+});
 
 // Connect to the database and start the server
 const MONGO_URI: string = process.env.MONGO_URI ?? '';
