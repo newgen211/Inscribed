@@ -2,13 +2,13 @@ import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, Link,
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import Copyright from '../components/Copyright';
 import { Link as ReactRouterDomLink } from 'react-router-dom';
-import { boolean, z } from 'zod';
+import { z, ZodError } from 'zod';
 import axios from 'axios';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { redirect } from 'react-router-dom';
 
 // Define RegisterSchema
-const RegisterFormData = z.object({
+const RegisterSchema = z.object({
 
     first_name: z.string().trim()
         .min(1, { message: 'First name is required'} )
@@ -46,15 +46,16 @@ const RegisterFormData = z.object({
         .min(8, { message: 'Confirm password must be at least 8 characters long' })
         .max(64, { message: 'Confirm password cannot exceed 64 characters in length' }),
 
-}).refine( data => data.password === data.confirm_password, { message: 'Passwords do not match' } );
+});
 
-type RegisterFormData = z.infer<typeof RegisterFormData>;
+
+type RegisterSchema = z.infer<typeof RegisterSchema>;
 
 
 const SignupPage: React.FC = () => {
 
     /* State for input fields */
-    const [registerFormData, setRegisterFormData] = useState<RegisterFormData>({ first_name : '', last_name : '', username : '', email : '', password : '', confirm_password : '' });
+    const [registerFormData, setRegisterFormData] = useState<RegisterSchema>({ first_name : '', last_name : '', username : '', email : '', password : '', confirm_password : '' });
 
     /* State to keep track of fields the user has interacted with */
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({ first_name: false, last_name: false, username: false, email: false, password: false, confirm_password: false });
@@ -62,33 +63,105 @@ const SignupPage: React.FC = () => {
     /* State to hold client/server side validation errors */
     const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
+    /* Function to validate a individual field */
+    const validateField = (name: keyof RegisterSchema, value: string) => {
+        
+        const fieldSchema = z.object({ [name]: RegisterSchema.shape[name] });
+
+        try {
+
+            fieldSchema.parse({ [name]: value });
+            setErrors(errors.filter(error => error.path[0] !== name));
+
+        } catch (error) {
+
+            if (error instanceof ZodError) {
+
+                setErrors([
+                    ...errors.filter(err => err.path[0] !== name),
+                    ...error.issues,
+                ]);
+
+            }
+        }
+    };
+
     /* Function to handle input change */
     const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-
         const { name, value } = event.target;
-
-        // Set the proper field in the registerFormData to the updated value
         setRegisterFormData({ ...registerFormData, [name]: value });
-
+        validateField(name as keyof RegisterSchema, value);
     };
 
     /* Function to handle Input Blur */
-    const handleBlur = (event: ChangeEvent<HTMLInputElement>): void => {
-
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         const { name, value } = event.target;
-
-        // Set the proper field in the touched to the updated value if the user interacts
         setTouched({ ...touched, [name]: true });
+        validateField(name as keyof RegisterSchema, value);
 
     };
 
-    /* Function to validate a input field */
-    const validateField = (name: string, value: string): string => {
-        return '';
+    /* Function to get a error message given a field name */
+    const getErrorMessage = ( field: keyof RegisterSchema ): string => {
+
+        if(!touched[field]) return '';
+
+        const error = errors.find(err => err.path[0] === field);
+
+        return error ? error.message : '';
+
     };
 
     /* Handle the form submit */
-    const handleSubmit = (event: ChangeEvent<HTMLInputElement>): void => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+
+        // Prevent the page from reloading when the form is submit
+        event.preventDefault();
+
+        // Mark all fields as touched to trigger all error messages if any
+        setTouched({
+            first_name: true,
+            last_name: true,
+            username: true,
+            email: true,
+            password: true,
+            confirm_password: true
+        });
+
+        try {
+
+            // Run the form input through the validation schema. This will throw a error if there are any validation errors.
+            RegisterSchema.parse(registerFormData);
+
+            // Make a api call to register a new user
+            const response = await axios.post('http://localhost:5000/api/auth/register', registerFormData);
+
+            // log the response
+            //console.log(response.data);
+
+
+        }
+        catch(error) {
+
+            if(error instanceof ZodError) {
+                setErrors(error.issues);
+            }
+
+            if(axios.isAxiosError(error)) {
+                
+                if (error.response?.data.errors) {
+                    // Update state with server-side validation errors
+                    setErrors(error.response.data.errors.map((err: any) => ({
+                        path: [err.field],
+                        message: err.message
+                    })));
+                } else {
+                    console.error(error);
+                }
+
+            }
+
+        }
 
     };
 
@@ -118,7 +191,7 @@ const SignupPage: React.FC = () => {
                 <Typography component='h1' variant='h5'>Sign Up</Typography>
 
                 {/* Sign Up Form */}
-                <Box component='form' noValidate sx={{mt: 3}}>
+                <Box component='form' onSubmit={handleSubmit} noValidate sx={{mt: 3}}>
 
                     <Grid container spacing={2}>
 
@@ -132,6 +205,10 @@ const SignupPage: React.FC = () => {
                                 name='first_name'
                                 autoComplete="given-name"
                                 value={registerFormData.first_name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error ={!!getErrorMessage('first_name')}
+                                helperText = {getErrorMessage('first_name')}
                                 autoFocus
                             />
 
@@ -146,6 +223,10 @@ const SignupPage: React.FC = () => {
                                 label='Last Name'
                                 name='last_name'
                                 value={registerFormData.last_name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!getErrorMessage('last_name')}
+                                helperText={getErrorMessage('last_name')}
                                 autoComplete="family-name"
                             />
 
@@ -160,6 +241,10 @@ const SignupPage: React.FC = () => {
                                 label='Username'
                                 name='username'
                                 value={registerFormData.username}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!getErrorMessage('username')}
+                                helperText={getErrorMessage('username')}
                                 autoComplete="username"
                             />
 
@@ -176,6 +261,11 @@ const SignupPage: React.FC = () => {
                                 autoComplete="email"
                                 type='email'
                                 value={registerFormData.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!getErrorMessage('email')}
+                                helperText={getErrorMessage('email')}
+                                
                             />
 
                         </Grid>
@@ -191,6 +281,11 @@ const SignupPage: React.FC = () => {
                                 autoComplete="password"
                                 type='password'
                                 value={registerFormData.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!getErrorMessage('password')}
+                                helperText={getErrorMessage('password')}
+                                
                             />
 
                         </Grid>
@@ -207,6 +302,10 @@ const SignupPage: React.FC = () => {
                                 autoComplete="confirm_password"
                                 type='password'
                                 value={registerFormData.confirm_password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!getErrorMessage('confirm_password')}
+                                helperText={getErrorMessage('confirm_password')}
                             />
 
                         </Grid>
