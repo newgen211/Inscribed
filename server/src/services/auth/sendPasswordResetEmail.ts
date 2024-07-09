@@ -28,7 +28,7 @@ const sendPasswordResetEmail = async (userDoc: UserDocument): Promise<void> => {
     });
 
     // Create the password reset url
-    const url: string = `${base}/api/auth/reset-password/${token}`;
+    const url: string = `${base}/api/auth/redirect-to-password-reset/${token}`;
 
     // Send password reset email
     const info: SentMessageInfo = await transporter.sendMail({
