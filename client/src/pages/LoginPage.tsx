@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography, Link } from '@mui/material';
-import AdjustIcon from '@mui/icons-material/Adjust';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { Link as ReactRouterDomLink } from 'react-router-dom';
 import Copyright from '../components/Copyright';
 
@@ -10,7 +10,7 @@ export default function LoginPage() {
 
         <Container component='main' maxWidth='xs'>
 
-            {/* Icon and Title */}
+            
             <Box
                 sx={{
                     marginTop: 8,
@@ -19,14 +19,14 @@ export default function LoginPage() {
                     alignItems: 'center',
                 }}
             >
-                
+                {/* Icon and Title */}
                 <Avatar
                     sx={{
                         m: 1,
                         bgcolor: 'secondary.main'
                     }}
                 >
-                    <AdjustIcon />
+                    <AlternateEmailIcon />
                 </Avatar>
 
                 <Typography component='h1' variant='h5'>Sign In</Typography>
