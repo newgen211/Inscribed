@@ -16,7 +16,7 @@ const SideBar: React.FC = () => {
                 height="100%"
                 sx={{
                     border: '2px solid',
-                    borderColor: 'secondary.light',
+                    borderColor: 'secondary.dark',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'left',
