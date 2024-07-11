@@ -1,0 +1,19 @@
+{
+  "name": "inscribed",
+  "version": "1.0.0",
+  "scripts": {
+    
+    "start": "node server/build/server.js",
+    "heroku_postbuild": "npm run build",
+    "build": "cd server && npm install && npm run build && cd ../client && npm install && npm run build",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install"
+
+  },
+  "engines": {
+    "node": "20.15.0",
+    "npm": "10.8.1"
+  },
+  "author": "Evan Kasky",
+  "license": "ISC"
+}
