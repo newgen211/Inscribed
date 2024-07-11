@@ -35,7 +35,7 @@ const verifyAccountController = async (req:Request, res:Response): Promise<void>
         // Check to see if the user is already validated
         if(user.verifed) {
 
-            res.status(200).redirect('/login');
+            res.status(200).redirect('/');
 
         }
 
@@ -44,7 +44,7 @@ const verifyAccountController = async (req:Request, res:Response): Promise<void>
         await user.save();
 
         // Redirect to the login page
-        return res.status(200).redirect('/login');
+        return res.status(200).redirect('/');
 
     }
     catch(error) {
