@@ -125,8 +125,9 @@ const LoginForm: React.FC = () => {
                         fullWidth
                         variant='contained'
                         sx={{my: 2}}
+                        disabled={!isValid || isLoading}
                     >
-                        Sign In
+                        Sign Up
                     </Button>
 
                     <Grid container>
