@@ -35,7 +35,7 @@ const loginController = async (req:Request, res:Response, next:NextFunction): Pr
 
             const response: APIResponse = {
                 timestamp: Date.now(),
-                message: 'Account is not verifed',
+                message: 'Account is not verifed. Please verify your account.',
                 code: 401
             };
 
@@ -49,7 +49,7 @@ const loginController = async (req:Request, res:Response, next:NextFunction): Pr
 
             const response: APIResponse = {
                 timestamp: Date.now(),
-                message: 'Account is locked',
+                message: 'Account is locked. Too many log in attempts. Please reset your password.',
                 code: 403
             };
 

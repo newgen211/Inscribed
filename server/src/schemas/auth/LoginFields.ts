@@ -9,8 +9,7 @@ export const LoginFields = z.object({
         .refine((name) => name.trim().length > 0, { message: 'Username cannot be just whitespace' }),
 
     password: z.string().trim()
-        .min(8, { message: 'Password must be at least 8 characters long' })
-        .max(64, { message: 'Password cannot exceed 64 characters in length' }),
+        .min(1, { message: 'Password is required' })
 
 });
 
