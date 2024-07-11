@@ -1,14 +1,19 @@
-import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, IconButton, InputAdornment, Link, TextField, Typography } from '@mui/material';
-import { Link as ReactRouterDomLink } from 'react-router-dom';
+import {  Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, IconButton, InputAdornment, Link, TextField, Typography } from '@mui/material';
+import { Link as ReactRouterDomLink, useNavigate } from 'react-router-dom';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { useCallback, useState } from 'react';
 import { registrationSchema, RegistrationSchema } from './schema';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import axios from 'axios';
+import { APIResponse } from '../../types/response/APIResponse';
 
 
 const RegisterForm: React.FC = () => {
+
+    /* Page Navigtor */
+    const navigate = useNavigate();
 
     /* Show password */
     const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +26,7 @@ const RegisterForm: React.FC = () => {
 
     const [isLoading, setLoading] = useState(false);
 
-    const { handleSubmit, control, formState: { errors, isValid } } = useForm({
+    const { handleSubmit, control, formState: { errors, isValid }, setError } = useForm({
         mode: 'all',
         defaultValues: {
             first_name: '', last_name: '', username: '', email: '', password: '', confirm_password: '', terms: false
@@ -30,17 +35,30 @@ const RegisterForm: React.FC = () => {
     });
 
     /* Form Handler */
-    const handleRegisterSubmit = useCallback( (values: RegistrationSchema) => {
+    const handleRegisterSubmit = useCallback( async (values: RegistrationSchema) => {
 
         setLoading(true);
 
         try {
 
-            window.alert(JSON.stringify(values, null, 4));
+            await axios.post("/api/auth/register", values);
+            navigate('/');
 
+            
         }
         catch(error) {
-            console.error('Error during submission:', error);
+
+            if(axios.isAxiosError(error) && error.response) {
+
+                const response: APIResponse = error.response.data;
+                
+                // Loop through all the server errors and add them to the form
+                response.errors?.forEach(err => {
+                    setError(err.field as keyof RegistrationSchema, { type: "manual", message: err.message });
+                });
+
+            }
+
         }
         finally {
             setLoading(false);

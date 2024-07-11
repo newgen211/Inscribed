@@ -5,7 +5,7 @@
     
     "start": "node server/build/server.js",
     "heroku_postbuild": "npm run build",
-    "build": "cd server && npm install && npm run build && cd ../client && npm install && npm run build",
+    "build": "cd server && npm install && npm run build && cd ../client && npm install && rm -rf build && npm run build",
     "install:server": "cd server && npm install",
     "install:client": "cd client && npm install"
 
