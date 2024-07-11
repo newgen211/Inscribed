@@ -1,7 +1,7 @@
 import PostPageComponent from "../components/PostPageComponent";
 import SideBar from "../components/SideBar";
 
-export default function DashboardPage() {
+export default function PostPage() {
    
     return (
 

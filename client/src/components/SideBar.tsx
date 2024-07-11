@@ -53,42 +53,54 @@ const SideBar: React.FC = () => {
                             Home
                         </Button>
                     </Link>
+                    <Link component={ReactRouterDomLink} to='/error'>
                     <Button
                         variant="text"
                         style={{justifyContent: "flex-start"}}
                     >
                         Explore
                     </Button>
-                    <Button
-                        variant="text"
-                        style={{justifyContent: "flex-start"}}
-                    >
-                        Messages
-                    </Button>
-                    <Button
-                        variant="text"
-                        style={{justifyContent: "flex-start"}}
-                    >
-                        Notifications
-                    </Button>
-                    <Button
-                        variant="text"
-                        style={{justifyContent: "flex-start"}}
-                    >
-                        Profile
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="error" 
-                    >
-                        Post
-                    </Button>
-                    <Button
-                        variant="text"
-                        style={{justifyContent: "flex-start"}}
-                    >
-                        Settings
-                    </Button>
+                    </Link>
+                    <Link component={ReactRouterDomLink} to='/error'>
+                        <Button
+                            variant="text"
+                            style={{justifyContent: "flex-start"}}
+                        >
+                            Messages
+                        </Button>
+                    </Link>
+                    <Link component={ReactRouterDomLink} to='/error'>
+                        <Button
+                            variant="text"
+                            style={{justifyContent: "flex-start"}}
+                        >
+                            Notifications
+                        </Button>
+                    </Link>
+                    <Link component={ReactRouterDomLink} to='/error'>
+                        <Button
+                            variant="text"
+                            style={{justifyContent: "flex-start"}}
+                        >
+                            Profile
+                        </Button>
+                    </Link>
+                    <Link component={ReactRouterDomLink} to='/error'>
+                        <Button
+                            variant="contained"
+                            color="error" 
+                        >
+                            Post
+                        </Button>
+                    </Link>
+                    <Link component={ReactRouterDomLink} to='/settings'>
+                        <Button
+                            variant="text"
+                            style={{justifyContent: "flex-start"}}
+                        >
+                            Settings
+                        </Button>
+                    </Link>
 
                 </Stack>
 
