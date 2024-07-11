@@ -164,7 +164,7 @@ const RegisterForm: React.FC = () => {
                                     />
 
                                 )}
-                            />
+                        />
 
                         </Grid>
 
