@@ -10,6 +10,7 @@ export interface APIResponse {
         code?: string | number;
 
     }>,
+    data?: any,
     token?: string
 
 };
