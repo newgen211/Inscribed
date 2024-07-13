@@ -1,37 +1,43 @@
+import { PostDocument } from '../../model/Post';
+import { Post } from '../../types/models/Post';
 import { Response } from 'express';
 import { CustomJwtPayload, CustomRequest } from '../../types/requests/CustomRequest';
-import { Post } from '../../types/models/Post';
-import { PostDocument } from '../../model/Post';
 import { APIResponse } from '../../types/responses/APIResponse';
- 
-const getAllPostsController = async (req: CustomRequest, res: Response): Promise<void> => {
+
+
+const getPostsController = async (req: CustomRequest, res: Response): Promise<void> => {
 
     try {
 
         // Get the user id from the request
         const userId: string = (req.user as CustomJwtPayload).userId;
 
-        // Fetch all post documents with the user id
-        const posts: PostDocument[] = await Post.find({ userId });
+        // Pagination parameters
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
+        // Fetch post documents with pagination
+        const posts: PostDocument[] = await Post.find({ userId }).limit(limit).skip(skip);
 
         // Retrieve the total count of posts for the user for pagination data
         const totalPosts = await Post.countDocuments({ userId });
 
-        // Return all posts
+        // Return paginated posts along with pagination info
         const response: APIResponse = {
-
             timestamp: Date.now(),
-            message: 'Users Posts',
+            message: 'User Posts Received',
             code: 200,
             data: {
                 posts,
+                totalPages: Math.ceil(totalPosts / limit),
                 totalPosts
             }
-
         };
 
         res.status(response.code).json(response);
         return;
+        
 
     }
     catch(error) {
@@ -47,7 +53,6 @@ const getAllPostsController = async (req: CustomRequest, res: Response): Promise
 
     }
 
-
 };
 
-export default getAllPostsController;
+export default getPostsController;
