@@ -1,13 +1,21 @@
-import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography, Link, InputAdornment, IconButton } from '@mui/material';
+import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography, Link, InputAdornment, IconButton, Alert } from '@mui/material';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import { Link as ReactRouterDomLink } from 'react-router-dom';
+import { Link as ReactRouterDomLink, useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema, loginSchema } from './schema';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import axios from 'axios';
+import { APIResponse } from '../../types/response/APIResponse';
 
 const LoginForm: React.FC = () => {
+
+    /* Page Navigtor */
+    const navigate = useNavigate();
+
+    /* Server Error State */
+    const [serverErrorMessage, setServerErrorMessage] = useState('');
 
     /* Show password */
     const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +35,29 @@ const LoginForm: React.FC = () => {
 
     const handleLoginSubmit = useCallback( async(values: LoginSchema) => {
         
+        setLoading(true);
+
+        try {
+
+            await axios.post('/api/auth/login', values);
+            navigate('/dashboard');
+
+        }
+        catch(error) {
+
+            if(axios.isAxiosError(error) && error.response) {
+
+                const response: APIResponse = error.response.data;
+                
+                setServerErrorMessage(response.message);
+
+            }
+
+        }
+        finally {
+            setLoading(false);
+        }
+
     }, []);
 
     return (
@@ -54,8 +85,15 @@ const LoginForm: React.FC = () => {
 
                 <Typography component='h1' variant='h5'>Sign In</Typography>
                 
+                {/* Display server error message */}
+                {serverErrorMessage && (
+                    <Alert severity="error" sx={{ width: '100%', my: 2 }}>
+                        {serverErrorMessage}
+                    </Alert>
+                )}
+
                 {/* Login Form */}
-                <Box component='form' noValidate sx={{ mt: 1 }}>
+                <Box component='form' onSubmit={handleSubmit(handleLoginSubmit)} noValidate sx={{ mt: 1 }}>
 
                     <Controller
                         name='username'

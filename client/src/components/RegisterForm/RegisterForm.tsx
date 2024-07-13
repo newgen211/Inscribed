@@ -1,4 +1,4 @@
-import {  Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, IconButton, InputAdornment, Link, TextField, Typography } from '@mui/material';
+import {  Alert, Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, IconButton, InputAdornment, Link, TextField, Typography } from '@mui/material';
 import { Link as ReactRouterDomLink, useNavigate } from 'react-router-dom';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { useCallback, useState } from 'react';
@@ -14,6 +14,9 @@ const RegisterForm: React.FC = () => {
 
     /* Page Navigtor */
     const navigate = useNavigate();
+
+    /* Server Error State */
+    const [serverErrorMessage, setServerErrorMessage] = useState('');
 
     /* Show password */
     const [showPassword, setShowPassword] = useState(false);
@@ -51,6 +54,8 @@ const RegisterForm: React.FC = () => {
             if(axios.isAxiosError(error) && error.response) {
 
                 const response: APIResponse = error.response.data;
+
+                setServerErrorMessage(response.message);
                 
                 // Loop through all the server errors and add them to the form
                 response.errors?.forEach(err => {
@@ -91,6 +96,13 @@ const RegisterForm: React.FC = () => {
                 </Avatar>
 
                 <Typography component='h1' variant='h5'>Sign Up</Typography>
+
+                {/* Display server error message */}
+                {serverErrorMessage && (
+                    <Alert severity="error" sx={{ width: '100%', my: 2 }}>
+                        {serverErrorMessage}
+                    </Alert>
+                )}
 
                 {/* Sign Up Form */}
                 <Box component='form' onSubmit={handleSubmit(handleRegisterSubmit)} noValidate sx={{mt: 3}}>
