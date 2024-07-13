@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { APIResponse } from 'types/responses/APIResponse';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { CustomJwtPayload, CustomRequest } from '../types/requests/CustomRequest';
 
-const isValidUser = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
+const isValidUser = async (req:CustomRequest, res:Response, next:NextFunction): Promise<void> => {
 
     // Get the JWT Secret from the .env files
     const JWT_SECRET: string = process.env.JWT_SECRET ?? '';
@@ -45,7 +46,7 @@ const isValidUser = async (req:Request, res:Response, next:NextFunction): Promis
 
             }
 
-            req.user = decoded as string | JwtPayload;
+            req.user = decoded as string | CustomJwtPayload;
             next();
 
     });
@@ -53,3 +54,5 @@ const isValidUser = async (req:Request, res:Response, next:NextFunction): Promis
 
 
 };
+
+export default isValidUser;
