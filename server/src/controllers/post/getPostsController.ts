@@ -1,5 +1,5 @@
-import { PostDocument } from '../../model/Post';
-import { Post } from '../../types/models/Post';
+import { PostDocument } from '../../types/models/Post';
+import { Post } from '../../model/Post';
 import { Response } from 'express';
 import { CustomJwtPayload, CustomRequest } from '../../types/requests/CustomRequest';
 import { APIResponse } from '../../types/responses/APIResponse';

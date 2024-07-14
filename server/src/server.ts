@@ -6,6 +6,7 @@ import sanitizeRequest from './middlewares/sanitzeRequest';
 import authRouter from './routes/authRoutes';
 import cors from 'cors';
 import postRouter from './routes/postRoutes';
+import userRouter from './routes/userRoutes';
 
 // Load the environment variables from the .env file
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(cors());
 app.post('/this-is-a-test-route-remove-before-deployment', sanitizeRequest, (req, res) => {res.status(200).send('Success')});
 app.use('/api/auth', authRouter);
 app.use('/api/post', postRouter);
+app.use('/api/user', userRouter);
 
 // Serve static files from the React frontend
 app.use(express.static(path.join(__dirname, '../../client/dist')));

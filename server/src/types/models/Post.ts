@@ -1,29 +1,14 @@
-import mongoose, { Model, Schema } from 'mongoose';
-import { PostDocument } from '../../model/Post';
+import mongoose, { Document } from 'mongoose';
 
-const PostSchema = new Schema<PostDocument>({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User'
-    },
-    post: {
-        type: String,
-        required: true
-    },
-    likes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    dislikes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+interface PostFields {
 
-// Export the Post model
-export const Post: Model<PostDocument> = mongoose.model<PostDocument>('Post', PostSchema);
+    userId: mongoose.Schema.Types.ObjectId;
+    post: string;
+    likes: mongoose.Schema.Types.ObjectId[],
+    dislikes: mongoose.Schema.Types.ObjectId[],
+    createdAt: Date
+
+};
+
+// Define the User Type based on Mongoose Docuemnt and the User fields
+export interface PostDocument extends PostFields, Document{};

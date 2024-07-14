@@ -3,8 +3,8 @@ import { CustomJwtPayload, CustomRequest } from '../../types/requests/CustomRequ
 import { NewPost } from '../../schemas/post/NewPost';
 import { APIResponse } from '../../types/responses/APIResponse';
 import { ZodError } from 'zod';
-import { PostDocument } from '../../model/Post';
-import { Post } from '../../types/models/Post';
+import { PostDocument } from '../../types/models/Post'; 
+import { Post } from '../../model/Post';
 
 
 const createPostController = async (req: CustomRequest, res: Response): Promise<void> => {

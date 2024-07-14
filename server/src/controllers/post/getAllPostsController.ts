@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { CustomJwtPayload, CustomRequest } from '../../types/requests/CustomRequest';
-import { Post } from '../../types/models/Post';
-import { PostDocument } from '../../model/Post';
+import { Post } from '../../model/Post';
+import { PostDocument } from '../../types/models/Post';
 import { APIResponse } from '../../types/responses/APIResponse';
  
 const getAllPostsController = async (req: CustomRequest, res: Response): Promise<void> => {
