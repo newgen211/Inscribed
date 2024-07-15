@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { APIResponse } from 'types/responses/APIResponse';
+import { APIResponse } from '../types/response'; 
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { CustomJwtPayload, CustomRequest } from '../types/requests/CustomRequest';
 
