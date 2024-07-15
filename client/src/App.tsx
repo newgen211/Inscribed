@@ -9,6 +9,7 @@ import UnsuccessfulAccountVerifyPage from './pages/UnsuccessfulAccountVerificati
 import SuccessfulAccountCreationPage from './pages/SuccessfulAccountCreationPage';
 import VerifyEmailSentPage from './pages/VerifyEmailSentPage';
 import RequestVerifyEmailPage from './pages/RequestVerifyEmailPage';
+import AccountAlreadyVerifiedPage from './pages/AccountAlreadyVerifiedPage';
 
 export default function App() {
 
@@ -28,6 +29,7 @@ export default function App() {
         <Route path='/unsuccessful-account-verification' element={<UnsuccessfulAccountVerifyPage />} />
         <Route path='/verify-email-sent' element={<VerifyEmailSentPage />} />
         <Route path='/request-verify-email' element={<RequestVerifyEmailPage />} />
+        <Route path='/account-already-verifed' element={<AccountAlreadyVerifiedPage />} />
         
         
       </Routes>

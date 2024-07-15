@@ -41,15 +41,7 @@ const verifyAccountController = async (req: Request, res: Response): Promise<voi
         // Check to make sure the user is not already verified
         if(user.verified) {
 
-            const response: APIResponse = {
-
-                message: 'User already verified',
-                code: 400,
-                errors: [{ field: 'userId', message: 'User is already verified', code: 'already_verified' }]
-
-            };
-
-            res.status(response.code).json(response);
+            res.redirect('/account-already-verifed');
             return;
 
         }
