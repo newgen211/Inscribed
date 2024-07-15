@@ -182,6 +182,15 @@ const LoginForm: React.FC = () => {
                             </Link>
                         </Grid>
 
+
+                        <Grid item xs={12}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                                <Link component={ReactRouterDomLink} to='/request-verify-email' variant='body2'>
+                                    Request Account Verification Email
+                                </Link>
+                            </Box>
+                        </Grid>
+
                     </Grid>
 
                 </Box>

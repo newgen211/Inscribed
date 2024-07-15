@@ -4,11 +4,13 @@ import verifyAccountController from '../controllers/auth/verify/verifyAccountCon
 import loginController from '../controllers/auth/login/loginController';
 import requestPasswordResetController from '../controllers/auth/requestPasswordReset/requestPasswordResetController';
 import resetPasswordController from '../controllers/auth/resetPassword/resetPasswordController';
+import requestVerifyEmailController from '../controllers/auth/requestVerifyEmail/requestVerifyEmailController';
 
 const authRouter = express.Router();
 
 authRouter.post('/register', registerController);
 authRouter.get('/verify-account', verifyAccountController);
+authRouter.post('/request-verify-email', requestVerifyEmailController);
 authRouter.post('/login', loginController);
 authRouter.post('/request-password-reset', requestPasswordResetController);
 authRouter.post('/reset-password', resetPasswordController);

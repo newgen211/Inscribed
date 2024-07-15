@@ -4,12 +4,11 @@ import SignupPage from './pages/SignupPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import DashboardPage from './pages/DashboardPage';
-import PostPage from './pages/PostPage';
-import SettingsPage from './pages/SettingsPage';
-import ErrorPage from './pages/ErrorPage';
 import SuccessfulAccountVerifyPage from './pages/SuccessfulAccountVerifyPage';
 import UnsuccessfulAccountVerifyPage from './pages/UnsuccessfulAccountVerificationPage';
-import SuccessfulAccountCreationPage from './pages/SuccessfultAccountCreationPage';
+import SuccessfulAccountCreationPage from './pages/SuccessfulAccountCreationPage';
+import VerifyEmailSentPage from './pages/VerifyEmailSentPage';
+import RequestVerifyEmailPage from './pages/RequestVerifyEmailPage';
 
 export default function App() {
 
@@ -27,12 +26,10 @@ export default function App() {
         <Route path='/successful-account-creation' element={<SuccessfulAccountCreationPage />} />
         <Route path='/successful-account-verification' element={<SuccessfulAccountVerifyPage />} />
         <Route path='/unsuccessful-account-verification' element={<UnsuccessfulAccountVerifyPage />} />
+        <Route path='/verify-email-sent' element={<VerifyEmailSentPage />} />
+        <Route path='/request-verify-email' element={<RequestVerifyEmailPage />} />
         
         
-        
-        <Route path='/post-page' element={<PostPage />} />
-        <Route path='/settings' element={<SettingsPage />} />
-        <Route path='/error' element={<ErrorPage />} />
       </Routes>
 
     </BrowserRouter>
