@@ -45,7 +45,7 @@ const RegisterForm: React.FC = () => {
         try {
 
             await axios.post("/api/auth/register", values);
-            navigate('/');
+            navigate('/successful-account-creation');
 
             
         }
@@ -282,22 +282,6 @@ const RegisterForm: React.FC = () => {
                         </Grid>
 
                     </Grid>
-
-                    <Controller
-                        name='terms'
-                        control={control}
-                        render={({ field }) => (
-                            <FormControlLabel
-                                control={<Checkbox {...field} color="primary" />}
-                                label="Accept Terms and Services"
-                            />
-                        )}
-                    />
-                    {errors.terms && (
-                        <Typography variant="body2" color="error">
-                            {errors.terms.message}
-                        </Typography>
-                    )}
 
                     <Button
                         type='submit'

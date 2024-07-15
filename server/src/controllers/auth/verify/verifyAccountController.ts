@@ -14,13 +14,7 @@ const verifyAccountController = async (req: Request, res: Response): Promise<voi
         // Handle case when there is no token provided
         if(!token) {
 
-            const response: APIResponse = {
-                message: 'No token provided',
-                code: 400,
-                errors: [{ field: 'token', message: 'Token is required', code: 'no_token' }]
-            };
-
-            res.status(response.code).json(response);
+            res.redirect('/unsuccessful-account-verification');
             return;
 
         }
@@ -39,12 +33,7 @@ const verifyAccountController = async (req: Request, res: Response): Promise<voi
         // Return a error if the user is not found
         if(!user) {
 
-            const response: APIResponse = {
-                message: 'User not found',
-                code: 404
-            };
-
-            res.status(response.code).json(response);
+            res.redirect('/unsuccessful-account-verification');
             return;
 
         }
@@ -70,12 +59,7 @@ const verifyAccountController = async (req: Request, res: Response): Promise<voi
         await user.save();
 
         // Return a success message
-        const response: APIResponse = {
-            message: 'User Account Verifed Successfully',
-            code: 200
-        };
-
-        res.status(response.code).json(response);
+        res.redirect('/successful-account-verification');
         return;
 
     }
@@ -86,35 +70,20 @@ const verifyAccountController = async (req: Request, res: Response): Promise<voi
 
         if(error instanceof jsonwebtoken.JsonWebTokenError) {
 
-            const response: APIResponse = {
-                message: 'Invalid Verification Token',
-                code: 400
-            };
-
-            res.status(response.code).json(response);
+            res.redirect('/unsuccessful-account-verification');
             return;
 
         }
 
         if(error instanceof jsonwebtoken.TokenExpiredError) {
 
-            const response: APIResponse = {
-                message: 'Validation Token Expired',
-                code: 400
-            };
-
-            res.status(response.code).json(response);
+            res.redirect('/unsuccessful-account-verification');
             return;
 
         }
 
         // Handle general errors
-        const response: APIResponse = {
-            message: 'Internal Server Error',
-            code: 500
-        };
-
-        res.status(response.code).json(response);
+        res.redirect('/unsuccessful-account-verification');
         return;
 
     }

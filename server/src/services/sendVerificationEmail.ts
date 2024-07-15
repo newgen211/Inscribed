@@ -33,7 +33,7 @@ const sendVerificationEmail = async (to: string, verifyToken: string) => {
         to: to,
         subject: 'Verify your Inscribed Account',
         html: `
-            <h2>Verify your Insribed Account</h2>
+            <h2>Verify your Inscribed Account</h2>
             <p>Click the link to verify your account: <a href="${verifyUrl}">Verify</a></p>
         `
     };
