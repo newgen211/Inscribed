@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const RequestPasswordReset = z.object({
+export const RequestVerifyEmailSchema = z.object({
 
     email: z.string().trim()
         .min(1, { message: 'Email address is required' })
@@ -9,4 +9,4 @@ export const RequestPasswordReset = z.object({
 
 });
 
-export type RequestPasswordReset = z.infer<typeof RequestPasswordReset>;
+export type RequestVerifyEmailSchema = z.infer<typeof RequestVerifyEmailSchema>;

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import log from '../../../utils/log';
 import { ZodError } from 'zod';
-import { APIResponse } from '../../../types/response';
+import { APIResponse } from '../../../types/response'; 
 import { RequestPasswordResetSchema } from './schema';
 import { User, UserDocument } from '../../../models/UserModel';
 import createResetToken from '../../../utils/createResetToken';
