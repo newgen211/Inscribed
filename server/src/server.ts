@@ -1,17 +1,20 @@
-import express, { Express } from 'express';
-const path = require('path');
-import * as dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import sanitizeRequest from './middlewares/sanitzeRequest';
-import authRouter from './routes/authRoutes';
+import dotenv from 'dotenv';
+import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
-import postRouter from './routes/postRoutes';
+import path from 'path';
+import mongoose from 'mongoose';
+import log from './utils/log';
+import authRouter from './routes/authRoutes';
 import userRouter from './routes/userRoutes';
 
-// Load the environment variables from the .env file
+// Load environment variables
 dotenv.config();
 
-// Initialize express application
+// Load the environment variables needed into constants
+const PORT: string | undefined      = process.env.PORT ?? '5000';
+const MONGO_URI: string | undefined = process.env.MONGO_URI ?? '';
+
+// Initalize the express app
 const app: Express = express();
 
 // Middleware
@@ -19,35 +22,32 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.post('/this-is-a-test-route-remove-before-deployment', sanitizeRequest, (req, res) => {res.status(200).send('Success')});
 app.use('/api/auth', authRouter);
-app.use('/api/post', postRouter);
 app.use('/api/user', userRouter);
 
-// Serve static files from the React frontend
+// Serve static React files and handle frontend routes
 app.use(express.static(path.join(__dirname, '../../client/dist')));
 
-// Handle React routing, return all requests to React app
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
+app.get('*', (req: Request, res: Response): void => {
+
+    res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
+
 });
 
-// Connect to the database and start the server
-const MONGO_URI: string = process.env.MONGO_URI ?? '';
-const PORT: number = parseInt(process.env.PORT ?? '5000', 10);
-
+// Connect to the MongoDB database
 mongoose.connect(MONGO_URI)
-.then(() => {
+.then( () => {
 
-    console.log('Connected to MongoDB');
-
-    app.listen(PORT, () => {
-        console.log(`Server is listening on port ${PORT}`);
+    log('INFO', 'Connected to MongoDB', true);
+    
+    // Start the express app
+    app.listen(parseInt(PORT, 10), () => {
+        log('INFO', `Server is listening on port ${PORT}`, true);
     });
 
-})
-.catch((error) => {
+} )
+.catch( (error) => {
 
-    console.error(`ERROR: Something went wrong while connecting to MongoDB : [${error}]`);
+    log('ERROR', `Something went wrong while connecting to MongoDB: ${error}`, true);
 
-});
+} );
