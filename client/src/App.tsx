@@ -1,41 +1,30 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import LandingPage from './pages/LandingPage';
+import RegisterPage from './pages/RegisterPage';
+import SuccessPage from './pages/SuccessPage';
+import RequestPasswordResetPage from './pages/RequestPasswordResetPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
-import DashboardPage from './pages/DashboardPage';
-import SuccessfulAccountVerifyPage from './pages/SuccessfulAccountVerifyPage';
-import UnsuccessfulAccountVerifyPage from './pages/UnsuccessfulAccountVerificationPage';
-import SuccessfulAccountCreationPage from './pages/SuccessfulAccountCreationPage';
-import VerifyEmailSentPage from './pages/VerifyEmailSentPage';
-import RequestVerifyEmailPage from './pages/RequestVerifyEmailPage';
-import AccountAlreadyVerifiedPage from './pages/AccountAlreadyVerifiedPage';
 
 export default function App() {
 
   return (
-
+    
     <BrowserRouter>
-
+    
       <Routes>
+        
+        {/* Auth Routes */}
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/register-success' element={<SuccessPage title='Account Created Successfully' message='Your account has been created. Dont forget to verify your account' linkTitle='To Login' redirectLink='/' />} />
+        <Route path='/request-password-reset' element={<RequestPasswordResetPage />} />
+        <Route path='/reset-email-sent' element={<SuccessPage title='Password Reset Email Sent' message='If the email belongs to a valid account, then the email is on the way' linkTitle='To Home' redirectLink='/' />} />
+        <Route path='/reset-password' element={<ResetPasswordPage />} />
 
-        <Route path='/' element={<LoginPage />} />
-        <Route path='/sign-up' element={<SignupPage />} />
-        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-        <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
-        <Route path='/dashboard' element={<DashboardPage />} />
-        <Route path='/successful-account-creation' element={<SuccessfulAccountCreationPage />} />
-        <Route path='/successful-account-verification' element={<SuccessfulAccountVerifyPage />} />
-        <Route path='/unsuccessful-account-verification' element={<UnsuccessfulAccountVerifyPage />} />
-        <Route path='/verify-email-sent' element={<VerifyEmailSentPage />} />
-        <Route path='/request-verify-email' element={<RequestVerifyEmailPage />} />
-        <Route path='/account-already-verifed' element={<AccountAlreadyVerifiedPage />} />
-        
-        
       </Routes>
 
     </BrowserRouter>
 
   );
-
+  
 }

@@ -1,18 +1,28 @@
-import dotenv from 'dotenv';
-import express, { Express, Request, Response } from 'express';
-import cors from 'cors';
-import path from 'path';
+import cors     from 'cors';
+import dotenv   from 'dotenv';
+import path     from 'path';
 import mongoose from 'mongoose';
-import log from './utils/log';
-import authRouter from './routes/authRoutes';
-import userRouter from './routes/userRoutes';
+import express, { Express, Response, Request } from 'express';
+import authRouter from './routes/auth.routes';
+import createTransporter from './utils/nodemailer.util';
+import userRouter from './routes/user.routes';
+            
 
 // Load environment variables
 dotenv.config();
 
-// Load the environment variables needed into constants
-const PORT: string | undefined      = process.env.PORT ?? '5000';
-const MONGO_URI: string | undefined = process.env.MONGO_URI ?? '';
+// Get the server port and MongoDB connection string from the environment variables
+const PORT: number            = parseInt(process.env.PORT as string ?? 5000, 10);
+const URI: string | undefined = process.env.MONGO_URI;
+
+// Check to make sure MongoDB URI is not undefined
+if(URI === undefined) {
+
+    // Log connection missing string error and exit gracefully
+    console.error(`MongoDB connection string (MONGO_URI) is not defined`);
+    process.exit(1);
+
+}
 
 // Initalize the express app
 const app: Express = express();
@@ -21,11 +31,14 @@ const app: Express = express();
 app.use(express.json());
 app.use(cors());
 
-// Routes
+// Create a nodemailer transporter to send email
+export const transporter = createTransporter();
+
+// Routers
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 
-// Serve static React files and handle frontend routes
+// Serve Static React Files and Frontend Routes
 app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 app.get('*', (req: Request, res: Response): void => {
@@ -34,20 +47,21 @@ app.get('*', (req: Request, res: Response): void => {
 
 });
 
-// Connect to the MongoDB database
-mongoose.connect(MONGO_URI)
-.then( () => {
+// Connect to MongoDB and start the server
+mongoose.connect(URI).then( () => {
 
-    log('INFO', 'Connected to MongoDB', true);
-    
+    // Log Connection to MongoDB
+    console.log(`Connected to MongoDB`);
+
     // Start the express app
-    app.listen(parseInt(PORT, 10), () => {
-        log('INFO', `Server is listening on port ${PORT}`, true);
+    app.listen(PORT, () => {
+        console.log(`Server is listening on port ${PORT}`);
     });
 
-} )
-.catch( (error) => {
+}).catch( (error) => {
 
-    log('ERROR', `Something went wrong while connecting to MongoDB: ${error}`, true);
+    // Log connection error and gracefully exit
+    console.error(`Error occured while connecting to MongoDB --- ${error} ---`);
+    process.exit(1);
 
-} );
+});

@@ -1,27 +1,8 @@
 import { Avatar, Box, Container, Typography } from '@mui/material';
 import AirIcon from '@mui/icons-material/Air';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import ResetPasswordForm from '../components/ResetPasswordForm';
+import RequestPasswordResetForm from '../components/RequestPasswordResetForm';
 
-
-export default function ResetPasswordPage() {
-
-    {/* Page navigator */}
-    const navigate = useNavigate();
-
-    {/* Get the token search parameter */}
-    const [searchParams] = useSearchParams();
-    const token = searchParams.get('token');
-
-    {/* If the token parameter is missing redirect to login page */}
-    useEffect(() => {
-
-        if(!token) {
-            navigate('/');
-        }
-
-    },[token, navigate]);
+export default function RequestPasswordResetPage() {
 
     return (
 
@@ -35,23 +16,24 @@ export default function ResetPasswordPage() {
                     alignItems: 'center',
                 }}
             >
-
+            
                 {/* Icon and Page Title and message */}
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <AirIcon />
                 </Avatar>
 
                 <Typography component="h1" variant="h5">
-                    Reset Your Passord
+                    Forgot Your Password?
                 </Typography>
 
                 <Typography component="p" sx={{mt: 1}}>
-                    Enter a new password for your account
+                    No worries, request a password reset email
                 </Typography>
 
-                {/* Reset Password Form */}
-                <ResetPasswordForm />
-                
+                {/* Request Password Reset Form */}
+                <RequestPasswordResetForm />
+
+
             </Box>
 
         </Container>
