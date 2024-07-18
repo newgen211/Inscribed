@@ -19,6 +19,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import CreateIcon from '@mui/icons-material/Create';
 import AirIcon from '@mui/icons-material/Air';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useAuth } from '../../hooks/useAuth';
 
 
 {/* Constants */}
@@ -105,8 +106,12 @@ export default function Sidebar() {
     {/* Function to open/close sidebar */}
     const handleDrawerOpenClose = () => setOpen(!open);
 
-     {/* Check screen size to set the initial state of the sidebar */}
-     useEffect(() => {
+    {/* Get the logout function from the auth context */}
+    const { logout } = useAuth();
+
+    {/* Check screen size to set the initial state of the sidebar */}
+    useEffect(() => {
+
         const mediaQuery = window.matchMedia('(min-width: 1024px)');
         setOpen(mediaQuery.matches);
 
@@ -116,6 +121,7 @@ export default function Sidebar() {
 
         mediaQuery.addEventListener('change', handleResize);
         return () => mediaQuery.removeEventListener('change', handleResize);
+
     }, []);
 
     {/* Sidebar JSX */}
@@ -246,7 +252,7 @@ export default function Sidebar() {
             {/* Logout button */}
             <List>
                 <ListItem disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5 }}>
+                    <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5 }} onClick={logout}>
                     <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>
                         <LogoutIcon color='secondary' />
                     </ListItemIcon>
