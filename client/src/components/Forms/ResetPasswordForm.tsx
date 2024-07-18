@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
-import { APIResponse } from '../types/APIResponse';
+import { APIResponse } from '../../types/APIResponse';
 
 {/* Reset Password Zod Schema */}
 
