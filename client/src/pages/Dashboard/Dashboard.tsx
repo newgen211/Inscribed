@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -14,6 +14,8 @@ export interface AppBarProps extends MuiAppBarProps {
 export interface DashboardAppBarProps {
     open: boolean;
     setOpen: (open: boolean) => void;
+    selectedTab: number;
+    setSelectedTab: (selectedTab: number) => void;
 }
 
 export interface DashboardDrawerProps {
@@ -113,14 +115,15 @@ export const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 
 
 export default function MiniDrawer() {
 
-    {/* Drawer State */}
-    const [open, setOpen] = React.useState(false);
+    {/* Define State */}
+    const [open, setOpen] = useState<boolean>(false);                 // Drawer open state
+    const [selectedTab, setSelectedTab] = useState<number>(0);        // Selected tab state
 
     {/* Dashboard JSX */}
     return (
         <Box sx={{ display: 'flex' }}>
 
-            <DashboardAppBar open={open} setOpen={setOpen} />
+            <DashboardAppBar open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
             <DashboardDrawer open={open} setOpen={setOpen} />
 
         </Box>
