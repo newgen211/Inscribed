@@ -30,6 +30,7 @@ import { FollowUserSchema } from '../schemas/user/followUserSchema';
 import followUserController from '../controllers/user/followUserController';
 import unfollowUserController from '../controllers/user/unfollowUserController';
 import getFollowersController from '../controllers/user/getFollowersController';
+import getUserInfo from '../controllers/user/getUserInfo';
 
 const userRouter = express.Router();
 
@@ -50,5 +51,6 @@ userRouter.get('/get-post-comments', isLoggedIn, validateRequestInput(GetPostCom
 userRouter.post('/follow', isLoggedIn, validateRequestInput(FollowUserSchema), followUserController);
 userRouter.post('/unfollow', isLoggedIn, validateRequestInput(FollowUserSchema), unfollowUserController);
 userRouter.get('/get-followers', isLoggedIn, getFollowersController);
+userRouter.get('/get-user-info', isLoggedIn, getUserInfo);
 
 export default userRouter;
