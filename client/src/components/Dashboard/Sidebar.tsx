@@ -130,7 +130,7 @@ export default function Sidebar() {
                         sx={{
                         opacity: open ? 1 : 0,
                         fontWeight: 'bold',
-                        color: 'primary.main',
+                        color: 'primary.main.contrastText',
                         }}
                     />
 
@@ -237,7 +237,7 @@ export default function Sidebar() {
                     <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>
                         <LogoutIcon color='secondary' />
                     </ListItemIcon>
-                    <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0, color: 'secondary.main' }} />
+                    <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0, color: 'secondary.main.contrastText' }} />
                     </ListItemButton>
                 </ListItem>
             </List>
