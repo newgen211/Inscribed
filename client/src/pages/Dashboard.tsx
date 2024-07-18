@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -11,6 +11,9 @@ import Search from '../components/Dashboard/Search';
 import FollowingFeed from '../components/Dashboard/FollowingFeed';
 import ForYouFeed from '../components/Dashboard/ForYouFeed';
 import Settings from '../components/Dashboard/Settings';
+import axios from 'axios';
+import { APIResponse } from '../types/APIResponse';
+import { CircularProgress } from '@mui/material';
 
 /* Interfaces */
 export interface AppBarProps extends MuiAppBarProps {
@@ -27,6 +30,7 @@ export interface DashboardDrawerProps {
     setOpen: (open: boolean) => void;
     selectedTab: number;
     setSelectedTab: (selectedTab: number) => void;
+    userInfo: any;
 }
 
 /* Define Constants */
@@ -124,6 +128,7 @@ export default function MiniDrawer() {
     {/* Define State */}
     const [open, setOpen] = useState<boolean>(false);                 // Drawer open state
     const [selectedTab, setSelectedTab] = useState<number>(0);        // Selected tab state
+    const [userInfo, setUserInfo] = useState<any>(null);              // Stores the user info
 
     {/* Determine what component to show */}
     const renderContent = () => {
@@ -147,20 +152,67 @@ export default function MiniDrawer() {
 
     };
 
+    {/* Get the user info on page load */}
+    useEffect(() => {
+
+      const getUserInfo = async () => {
+
+        try {
+
+          {/* Retrieve the auth token from local storage */}
+          const token = localStorage.getItem('token');
+
+          {/* Make API call to get user info */}
+          const response: APIResponse = await axios.get('/api/user/get-user-info', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          {/* Store the user info */}
+          setUserInfo(response.data.data);
+
+        }
+        
+        catch(error) {
+
+          console.log(`Error fetching user data: ${error}`);
+
+        }
+
+      };
+
+      getUserInfo();
+
+    }, []);
+
     {/* Dashboard JSX */}
     return (
+
         <Box sx={{ display: 'flex' }}>
+            
+            { userInfo ? (
 
-            <DashboardAppBar open={open} setOpen={setOpen}  />
-            <DashboardDrawer open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+              <>
+                <DashboardAppBar open={open} setOpen={setOpen}  />
+                <DashboardDrawer open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} userInfo={userInfo} />
 
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-              <DrawerHeader />
-              {renderContent()}
-            </Box>
+                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                  <DrawerHeader />
+                  {renderContent()}
+                </Box>
 
-            <FixedThemeToggleButton />
+                <FixedThemeToggleButton />
+              </>
+
+            ) : (<CircularProgress />) }
 
         </Box>
     );
 }
+
+/* 
+
+
+
+*/

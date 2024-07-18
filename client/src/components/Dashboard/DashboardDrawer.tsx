@@ -10,7 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PublicIcon from '@mui/icons-material/Public';
 
-export default function DashboardDrawer({open, setOpen, selectedTab, setSelectedTab}: DashboardDrawerProps) {
+export default function DashboardDrawer({open, setOpen, selectedTab, setSelectedTab, userInfo}: DashboardDrawerProps) {
 
     /* Function to close drawer */
     const handleDrawerClose = () => setOpen(false);
@@ -22,6 +22,11 @@ export default function DashboardDrawer({open, setOpen, selectedTab, setSelected
 
     /* Get the theme */
     const theme = useTheme();
+
+    /* Get user's initials */
+    const getInitials = (firstName: string, lastName: string) => {
+        return `${firstName.charAt(0)}${lastName.charAt(0)}`;
+    };
 
     return (
 
@@ -136,8 +141,8 @@ export default function DashboardDrawer({open, setOpen, selectedTab, setSelected
 
                     <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'inital': 'center', px: 2.5 }}>
 
-                        <Avatar sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>EK</Avatar>
-                        <ListItemText primary='Username' sx={{ opacity: open ? 1 : 0 }} />
+                        <Avatar sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>{getInitials(userInfo.first_name, userInfo.last_name)}</Avatar>
+                        <ListItemText primary={userInfo.username} sx={{ opacity: open ? 1 : 0 }} />
 
                     </ListItemButton>
 
