@@ -1,6 +1,7 @@
 import { Avatar, Box, Container, Typography } from '@mui/material';
 import AirIcon from '@mui/icons-material/Air';
 import LoginForm from '../components/Forms/LoginForm';
+import FixedThemeToggleButton from '../components/utils/FixedThemeToggleButton';
 
 export default function LandingPage() {
 
@@ -32,6 +33,9 @@ export default function LandingPage() {
 
 
             </Box>
+
+            {/* Theme Toggle button */}
+            <FixedThemeToggleButton />
 
         </Container>
         

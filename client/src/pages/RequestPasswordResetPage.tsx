@@ -1,6 +1,7 @@
 import { Avatar, Box, Container, Typography } from '@mui/material';
 import AirIcon from '@mui/icons-material/Air';
 import RequestPasswordResetForm from '../components/Forms/RequestPasswordResetForm';
+import FixedThemeToggleButton from '../components/utils/FixedThemeToggleButton';
 
 export default function RequestPasswordResetPage() {
 
@@ -35,6 +36,9 @@ export default function RequestPasswordResetPage() {
 
 
             </Box>
+
+            {/* Theme Toggle button */}
+            <FixedThemeToggleButton />
 
         </Container>
 

@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/Forms/RegisterForm';
+import FixedThemeToggleButton from '../components/utils/FixedThemeToggleButton';
 
 export default function RegisterPage() {
 
@@ -48,6 +49,9 @@ export default function RegisterPage() {
 
 
             </Box>
+
+            {/* Theme Toggle button */}
+            <FixedThemeToggleButton />
 
         </Container>
 

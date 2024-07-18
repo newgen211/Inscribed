@@ -1,6 +1,7 @@
 import { CheckCircleOutline } from '@mui/icons-material';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import FixedThemeToggleButton from '../components/utils/FixedThemeToggleButton';
 
 interface SuccessPageProps {
     title: string;
@@ -46,6 +47,10 @@ export default function SuccessPage({ title, message, redirectLink, linkTitle }:
             <Button variant="contained" color="primary" onClick={handleRedirect} sx={{mt: 4}}>
                 {linkTitle}
             </Button>
+
+            {/* Theme Toggle button */}
+            <FixedThemeToggleButton />
+
         </Box>
 
     );

@@ -3,6 +3,7 @@ import AirIcon from '@mui/icons-material/Air';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import ResetPasswordForm from '../components/Forms/ResetPasswordForm';
+import FixedThemeToggleButton from '../components/utils/FixedThemeToggleButton';
 
 
 export default function ResetPasswordPage() {
@@ -53,6 +54,9 @@ export default function ResetPasswordPage() {
                 <ResetPasswordForm />
                 
             </Box>
+
+            {/* Theme Toggle button */}
+            <FixedThemeToggleButton />
 
         </Container>
 
