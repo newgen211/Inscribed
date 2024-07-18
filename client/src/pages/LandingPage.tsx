@@ -1,6 +1,6 @@
 import { Avatar, Box, Container, Typography } from '@mui/material';
 import AirIcon from '@mui/icons-material/Air';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/Forms/LoginForm';
 
 export default function LandingPage() {
 

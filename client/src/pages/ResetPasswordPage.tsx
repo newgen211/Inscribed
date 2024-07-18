@@ -2,7 +2,7 @@ import { Avatar, Box, Container, Typography } from '@mui/material';
 import AirIcon from '@mui/icons-material/Air';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import ResetPasswordForm from '../components/ResetPasswordForm';
+import ResetPasswordForm from '../components/Forms/ResetPasswordForm';
 
 
 export default function ResetPasswordPage() {

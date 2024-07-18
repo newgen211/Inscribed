@@ -4,6 +4,7 @@ import RegisterPage from './pages/RegisterPage';
 import SuccessPage from './pages/SuccessPage';
 import RequestPasswordResetPage from './pages/RequestPasswordResetPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import ProtectedRoute from './components/utils/ProtectedRoute';
 
 export default function App() {
 
@@ -20,6 +21,13 @@ export default function App() {
         <Route path='/request-password-reset' element={<RequestPasswordResetPage />} />
         <Route path='/reset-email-sent' element={<SuccessPage title='Password Reset Email Sent' message='If the email belongs to a valid account, then the email is on the way' linkTitle='To Home' redirectLink='/' />} />
         <Route path='/reset-password' element={<ResetPasswordPage />} />
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+
+          <Route path='/dashboard' element={<>Protected Dashboard</>} />
+
+        </Route>
 
       </Routes>
 
