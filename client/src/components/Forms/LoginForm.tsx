@@ -71,7 +71,7 @@ export default function LoginForm() {
             login(response.data.token);
 
             // Redirect to the dashboard
-            navigate('/dahboard');
+            navigate('/dashboard');
 
         }
 

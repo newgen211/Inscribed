@@ -5,6 +5,7 @@ import SuccessPage from './pages/SuccessPage';
 import RequestPasswordResetPage from './pages/RequestPasswordResetPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import ProtectedRoute from './components/utils/ProtectedRoute';
+import Dashboard from './pages/Dashboard';
 
 export default function App() {
 
@@ -25,7 +26,7 @@ export default function App() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
 
-          <Route path='/dashboard' element={<>Protected Dashboard</>} />
+          <Route path='/dashboard' element={<Dashboard />} />
 
         </Route>
 
