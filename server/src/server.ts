@@ -3,9 +3,9 @@ import dotenv   from 'dotenv';
 import path     from 'path';
 import mongoose from 'mongoose';
 import express, { Express, Response, Request } from 'express';
-import authRouter from './routes/auth.routes';
-import createTransporter from './utils/nodemailer.util';
-import userRouter from './routes/user.routes';
+import authRouter from './routes/authRoutes';
+import createTransporter from './utils/nodemailer';
+import userRouter from './routes/userRoutes';
             
 
 // Load environment variables
