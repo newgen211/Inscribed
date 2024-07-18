@@ -2,7 +2,7 @@
     Based off the Drawer found in the docs: https://mui.com/material-ui/react-drawer/  -- (Mini variant drawer)
 */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -104,6 +104,19 @@ export default function Sidebar() {
 
     {/* Function to open/close sidebar */}
     const handleDrawerOpenClose = () => setOpen(!open);
+
+     {/* Check screen size to set the initial state of the sidebar */}
+     useEffect(() => {
+        const mediaQuery = window.matchMedia('(min-width: 1024px)');
+        setOpen(mediaQuery.matches);
+
+        const handleResize = (event: MediaQueryListEvent) => {
+            setOpen(event.matches);
+        };
+
+        mediaQuery.addEventListener('change', handleResize);
+        return () => mediaQuery.removeEventListener('change', handleResize);
+    }, []);
 
     {/* Sidebar JSX */}
     return (
