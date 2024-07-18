@@ -22,7 +22,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 
 {/* Constants */}
-const drawerWidth = 240;                                 // Width of the drawer when fully open
+const drawerWidth = 350;                                 // Width of the drawer when fully open
 
 {/* CSS Styles for drawer when it is open */}
 const openedMixin = (theme: Theme): CSSObject => ({
