@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { IUser } from '../models/user.model'; 
+import { IUser } from '../models/user'; 
 
 
 const createVerificationToken = (user: IUser): string => {

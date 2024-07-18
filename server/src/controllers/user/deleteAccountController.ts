@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { CustomJwtPayload, CustomRequest } from '../../types/CustomRequest.type';
-import { IUser, User } from '../../models/user.model';
-import { APIResponse } from '../../types/APIResponse.type';
+import { CustomJwtPayload, CustomRequest } from '../../types/CustomRequest';
+import { IUser, User } from '../../models/user';
+import { APIResponse } from '../../types/APIResponse';
 import { StatusCodes } from 'http-status-codes';
 
 const deleteAccountController = async (req: CustomRequest, res: Response): Promise<void> => {

@@ -1,9 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
-import { APIResponse } from '../../types/APIResponse.type';
-import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest.type';
+import { APIResponse } from '../../types/APIResponse';
+import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest';
 import { Response } from 'express';
-import { Comment } from '../../models/comment.model';
-import { Post } from '../../models/post.model';
+import { Comment } from '../../models/comment';
+import { Post } from '../../models/post';
 
 const deleteCommentController = async (req: CustomRequest, res: Response): Promise<void> => {
 

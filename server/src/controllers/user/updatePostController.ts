@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest.type';
-import { Post } from '../../models/post.model';
-import { APIResponse } from '../../types/APIResponse.type';
+import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest';
+import { Post } from '../../models/post';
+import { APIResponse } from '../../types/APIResponse';
 import { StatusCodes } from 'http-status-codes';
 
 

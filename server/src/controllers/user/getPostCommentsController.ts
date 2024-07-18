@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
-import { APIResponse } from '../../types/APIResponse.type';
-import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest.type'; 
+import { APIResponse } from '../../types/APIResponse';
+import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest'; 
 import { Response } from 'express';
-import { Comment, IComment } from '../../models/comment.model';
+import { Comment, IComment } from '../../models/comment';
 
 const getPostCommentsController = async (req: CustomRequest, res: Response): Promise<void> => {
 

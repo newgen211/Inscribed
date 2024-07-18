@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { IUser, User } from '../../models/user.model';
-import { APIResponse } from '../../types/APIResponse.type';
+import { IUser, User } from '../../models/user';
+import { APIResponse } from '../../types/APIResponse';
 import { StatusCodes } from 'http-status-codes';
-import sendPasswordResetEmail from '../../services/sendPasswordResetEmail.service';
-import createPasswordResetToken from '../../utils/createPasswordResetToken.util';
+import sendVerificationEmail from '../../services/sendVerificationEmail';
+import createVerificationToken from '../../utils/createVerificationToken';
 
-const requestPasswordResetController = async (req: Request, res: Response): Promise<void> => {
 
+const requestAccountVerificationEmailController = async (req: Request, res: Response): Promise<void> => {
 
     try {
 
@@ -28,12 +28,12 @@ const requestPasswordResetController = async (req: Request, res: Response): Prom
 
         }
 
-        // Send a reset password email
-        await sendPasswordResetEmail(user.email, createPasswordResetToken(user));
+        // Send a new verification email
+        await sendVerificationEmail(user.email, createVerificationToken(user));
 
         // Send success response
         const response: APIResponse = {
-            message: 'Password reset email sent',
+            message: 'Verification email sent',
             code:    StatusCodes.OK
         };
 
@@ -41,7 +41,7 @@ const requestPasswordResetController = async (req: Request, res: Response): Prom
         return;
 
     }
-    
+
     catch(error) {
 
         // Log the error
@@ -60,4 +60,4 @@ const requestPasswordResetController = async (req: Request, res: Response): Prom
 
 };
 
-export default requestPasswordResetController;
+export default requestAccountVerificationEmailController;

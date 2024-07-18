@@ -1,8 +1,8 @@
 import { Response } from 'express';
-import { CustomJwtPayload, CustomRequest } from '../../types/CustomRequest.type';
-import { APIResponse } from '../../types/APIResponse.type';
+import { CustomJwtPayload, CustomRequest } from '../../types/CustomRequest';
+import { APIResponse } from '../../types/APIResponse';
 import { StatusCodes } from 'http-status-codes';
-import { IUser, User } from '../../models/user.model';
+import { IUser, User } from '../../models/user';
 
 
 const updateNameController = async (req: CustomRequest, res: Response): Promise<void> => {

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { APIResponse } from '../types/APIResponse.type';
+import { APIResponse } from '../types/APIResponse';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
-import { CustomRequest, CustomJwtPayload } from '../types/CustomRequest.type';
+import { CustomRequest, CustomJwtPayload } from '../types/CustomRequest';
 
 const isLoggedIn = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
     

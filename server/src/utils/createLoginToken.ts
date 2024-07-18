@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-import { IUser } from '../models/user.model'; 
+import { IUser } from '../models/user'; 
 
 
-const createPasswordResetToken = (user: IUser): string => {
+const createLoginToken = (user: IUser): string => {
 
     // Get the JWT Secret
     const jwt_secret: string | undefined = process.env.JWT_SECRET;
@@ -14,13 +14,14 @@ const createPasswordResetToken = (user: IUser): string => {
 
     // create the token iat, exp, and payload
     const iat: number = Math.floor(Date.now() / 1000);
-    const exp: number = iat + (15 * 60);                        // 15 minutes
+    const exp: number = iat + (60 * 60);                        // 1 hour
 
     const payload = {
         userId: user.id,
+        account_verified: user.account_verified,
         iat,
         exp,
-        purpose: 'Account Recovery'
+        purpose: 'Login Token'
     };
 
     // Create the token
@@ -30,4 +31,4 @@ const createPasswordResetToken = (user: IUser): string => {
 
 };
 
-export default createPasswordResetToken;
+export default createLoginToken;

@@ -1,8 +1,8 @@
 import { Response } from 'express';
-import { CustomJwtPayload, CustomRequest } from '../../types/CustomRequest.type';
-import { APIResponse } from '../../types/APIResponse.type';
+import { CustomJwtPayload, CustomRequest } from '../../types/CustomRequest';
+import { APIResponse } from '../../types/APIResponse';
 import { StatusCodes } from 'http-status-codes';
-import { Follower, IFollower } from '../../models/follower.model';
+import { Follower, IFollower } from '../../models/follower';
 
 
 const getFollowersController = async (req: CustomRequest, res: Response): Promise<void> => {

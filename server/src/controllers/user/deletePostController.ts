@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
-import { APIResponse } from '../../types/APIResponse.type';
-import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest.type';
+import { APIResponse } from '../../types/APIResponse';
+import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest';
 import { Response } from 'express';
-import { IPost, Post } from '../../models/post.model';
-import { Like } from '../../models/like.model';
-import { Comment } from '../../models/comment.model';
+import { IPost, Post } from '../../models/post';
+import { Like } from '../../models/like';
+import { Comment } from '../../models/comment';
 
 const deletePostController = async (req: CustomRequest, res: Response): Promise<void> => {
 

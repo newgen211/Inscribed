@@ -1,9 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
-import { IPost, Post } from '../../models/post.model';
-import { APIResponse } from '../../types/APIResponse.type';
-import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest.type';
+import { IPost, Post } from '../../models/post';
+import { APIResponse } from '../../types/APIResponse';
+import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest';
 import { Response } from 'express';
-import { Comment, IComment } from '../../models/comment.model';
+import { Comment, IComment } from '../../models/comment';
 
 const createCommentController = async (req: CustomRequest, res: Response): Promise<void> => {
 

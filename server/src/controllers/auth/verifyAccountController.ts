@@ -1,22 +1,21 @@
-import * as argon2 from 'argon2';
-import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import { APIResponse } from '../../types/APIResponse.type';
+import { APIResponse } from '../../types/APIResponse';
 import { StatusCodes } from 'http-status-codes';
-import { IUser, User } from '../../models/user.model';
+import jwt from 'jsonwebtoken';
+import { IUser, User } from '../../models/user';
 
-const resetPasswordController = async (req: Request, res: Response): Promise<void> => {
+const verifyAccountController = async (req: Request, res: Response): Promise<void> => {
 
     try {
 
-        // Get the reset token from the query parameters
+        // Get the verification token from the query parameters
         const token: string | undefined = req.query.token as string | undefined;
 
         // Make sure the token is present
         if(!token) {
 
             const response: APIResponse = {
-                message: 'Password Reset Token Missing',
+                message: 'Verification Token Missing',
                 code:    StatusCodes.BAD_REQUEST
             };
 
@@ -55,27 +54,31 @@ const resetPasswordController = async (req: Request, res: Response): Promise<voi
 
         }
 
-        // Get the new password from the request body
-        const { password } = req.body;
+        // Check to see if the user is already a verified user
+        if(user.account_verified) {
 
-        // Hash the password
-        const hash: string = await argon2.hash(password);
+            const response: APIResponse = {
+                message: 'Account already verified',
+                code:    StatusCodes.BAD_REQUEST
+            };
 
-        // Update the user's password
-        user.password = hash;
-        user.account_locked = false;
-        user.login_attempts = 0;
+            res.status(response.code).json(response);
+            return;
+
+        }
+
+        // Update the user's verified status to true
+        user.account_verified = true;
         await user.save();
 
-        // Return success resonse
+        // Respond with success message
         const response: APIResponse = {
-            message: 'Password updated successfully',
-            code: StatusCodes.OK
+            message: 'Account verified successfully',
+            code:    StatusCodes.OK
         };
 
         res.status(response.code).json(response);
         return;
-
 
     }
 
@@ -88,7 +91,7 @@ const resetPasswordController = async (req: Request, res: Response): Promise<voi
         if(error instanceof jwt.TokenExpiredError) {
 
             const response: APIResponse = {
-                message: 'Password reset token has expired',
+                message: 'Verification token has expired',
                 code:    StatusCodes.UNAUTHORIZED
             };
 
@@ -101,7 +104,7 @@ const resetPasswordController = async (req: Request, res: Response): Promise<voi
         if(error instanceof jwt.JsonWebTokenError) {
 
             const response: APIResponse = {
-                message: 'Password reset token invalid',
+                message: 'Verification token invalid',
                 code:    StatusCodes.BAD_REQUEST
             };
 
@@ -123,4 +126,4 @@ const resetPasswordController = async (req: Request, res: Response): Promise<voi
 
 };
 
-export default resetPasswordController;
+export default verifyAccountController;

@@ -1,9 +1,9 @@
 import * as argon2 from 'argon2';
 import { StatusCodes } from 'http-status-codes';
-import { APIResponse } from '../../types/APIResponse.type';
-import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest.type';
+import { APIResponse } from '../../types/APIResponse';
+import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest';
 import { Response } from 'express';
-import { IUser, User } from '../../models/user.model';
+import { IUser, User } from '../../models/user';
 
 const updatePasswordController = async (req: CustomRequest, res: Response): Promise<void> => {
 

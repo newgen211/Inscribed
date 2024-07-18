@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { z, ZodEffects, ZodError, ZodObject } from 'zod';
 import { StatusCodes } from 'http-status-codes';
-import { APIResponse } from '../types/APIResponse.type';
+import { APIResponse } from '../types/APIResponse';
 
 export function validateRequestInput(schema: z.ZodObject<any, any> | ZodEffects<ZodObject<any, any>>) {
 
