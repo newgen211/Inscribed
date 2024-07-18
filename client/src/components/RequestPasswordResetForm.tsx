@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Grid, Link, TextField } from '@mui/material';
+import { Alert, Box, Button, Grid, Link, TextField } from '@mui/material';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -81,6 +81,8 @@ export default function RequestPasswordResetForm() {
     return (
 
         <Box component="form" onSubmit={handleSubmit(handleRequestSubmit)} noValidate sx={{ mt: 3 }}>
+
+            {serverErrorMessage && <Alert severity='error' sx={{mb: 2}}>{serverErrorMessage}</Alert>}
 
             <Controller 
                 control={control}
