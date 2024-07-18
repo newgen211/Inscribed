@@ -1,13 +1,12 @@
 import { useTheme } from '@mui/material/styles';
 import { DashboardDrawerProps, Drawer, DrawerHeader } from '../../pages/Dashboard/Dashboard';
-import { Box, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Avatar, Box, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import CreateIcon from '@mui/icons-material/Create';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function DashboardDrawer({open, setOpen}: DashboardDrawerProps) {
 
@@ -72,6 +71,18 @@ export default function DashboardDrawer({open, setOpen}: DashboardDrawerProps) {
 
                 </ListItem>
 
+                {/* Settings */}
+                <ListItem disablePadding sx={{display: 'block'}}>
+
+                    <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'inital': 'center', px: 2.5 }}>
+
+                        <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}><SettingsIcon /></ListItemIcon>
+                        <ListItemText primary='Settings' sx={{ opacity: open ? 1 : 0 }} />
+
+                    </ListItemButton>
+
+                </ListItem>
+
             </List>
 
 
@@ -83,18 +94,18 @@ export default function DashboardDrawer({open, setOpen}: DashboardDrawerProps) {
             {/* Secondary section */}
             <List>
 
-                {/* Home */}
+                {/* Profile */}
                 <ListItem disablePadding sx={{display: 'block'}}>
 
                     <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'inital': 'center', px: 2.5 }}>
 
-                        <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}><HomeIcon /></ListItemIcon>
-                        <ListItemText primary='Home' sx={{ opacity: open ? 1 : 0 }} />
+                        <Avatar sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>EK</Avatar>
+                        <ListItemText primary='Username' sx={{ opacity: open ? 1 : 0 }} />
 
                     </ListItemButton>
 
                 </ListItem>
-                
+
             </List>
 
         </Drawer>
