@@ -1,6 +1,6 @@
 import * as argon2 from 'argon2';
 import { Request, Response } from 'express';
-import { IUser, User } from '../../models/user.model';
+import { IUser, User } from '../../models/user.model'; 
 import { APIResponse } from '../../types/APIResponse.type';
 import { StatusCodes } from 'http-status-codes';
 import sendVerificationEmail from '../../services/sendVerificationEmail.service';
