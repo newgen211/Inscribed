@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { IconButton, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+import { Box, IconButton, Toolbar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, DashboardAppBarProps } from '../../pages/Dashboard/Dashboard';
+import { AppBar, DashboardAppBarProps } from '../../pages/Dashboard';
+import AirIcon from '@mui/icons-material/Air';
 
-export default function DashboardAppBar({ open, setOpen, selectedTab, setSelectedTab }: DashboardAppBarProps) {
+export default function DashboardAppBar({ open, setOpen }: DashboardAppBarProps) {
 
     /* Function to open drawer */
     const handleDrawerOpen = () => setOpen(true);
-
-    /* Function to handle tab change */
-    const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => setSelectedTab(newValue);
 
     /* Appbar JSX */
     return (
@@ -30,23 +28,12 @@ export default function DashboardAppBar({ open, setOpen, selectedTab, setSelecte
                 >
                     <MenuIcon />
                 </IconButton>
+                
+                <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
 
-                <Tabs value={selectedTab} onChange={handleTabChange} aria-label="simple tabs example"
-                    sx={{
-                        '& .MuiTab-root': {
-                            color: 'white',
-                            '&.Mui-selected': {
-                                color: 'yellow',
-                            },
-                        },
-                        '& .MuiTabs-indicator': {
-                            backgroundColor: 'yellow',
-                        },
-                    }}
-                >
-                    <Tab label="For You" />
-                    <Tab label="Discover" />
-                </Tabs>
+                    <AirIcon fontSize='large' />
+
+                </Box>
 
             </Toolbar>
 

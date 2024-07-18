@@ -3,8 +3,14 @@ import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import DashboardAppBar from '../../components/Dashboard/DashboardAppBar';
-import DashboardDrawer from '../../components/Dashboard/DashboardDrawer';
+import DashboardAppBar from '../components/Dashboard/DashboardAppBar';
+import DashboardDrawer from '../components/Dashboard/DashboardDrawer';
+import FixedThemeToggleButton from '../components/utils/FixedThemeToggleButton';
+import Home from '../components/Dashboard/Home';
+import Search from '../components/Dashboard/Search';
+import FollowingFeed from '../components/Dashboard/FollowingFeed';
+import ForYouFeed from '../components/Dashboard/ForYouFeed';
+import Settings from '../components/Dashboard/Settings';
 
 /* Interfaces */
 export interface AppBarProps extends MuiAppBarProps {
@@ -14,13 +20,13 @@ export interface AppBarProps extends MuiAppBarProps {
 export interface DashboardAppBarProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    selectedTab: number;
-    setSelectedTab: (selectedTab: number) => void;
 }
 
 export interface DashboardDrawerProps {
     open: boolean;
     setOpen: (open: boolean) => void;
+    selectedTab: number;
+    setSelectedTab: (selectedTab: number) => void;
 }
 
 /* Define Constants */
@@ -119,12 +125,41 @@ export default function MiniDrawer() {
     const [open, setOpen] = useState<boolean>(false);                 // Drawer open state
     const [selectedTab, setSelectedTab] = useState<number>(0);        // Selected tab state
 
+    {/* Determine what component to show */}
+    const renderContent = () => {
+
+      switch(selectedTab) {
+
+        case 0:
+            return <Home />;
+        case 1:
+            return <Search />;
+        case 2:
+            return <FollowingFeed />;
+        case 3:
+            return <ForYouFeed />;
+        case 4:
+            return <Settings />;
+        default:
+            return <Home />;
+
+      }
+
+    };
+
     {/* Dashboard JSX */}
     return (
         <Box sx={{ display: 'flex' }}>
 
-            <DashboardAppBar open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-            <DashboardDrawer open={open} setOpen={setOpen} />
+            <DashboardAppBar open={open} setOpen={setOpen}  />
+            <DashboardDrawer open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+              <DrawerHeader />
+              {renderContent()}
+            </Box>
+
+            <FixedThemeToggleButton />
 
         </Box>
     );
