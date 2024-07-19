@@ -141,8 +141,8 @@ export default function DashboardDrawer({open, setOpen, selectedTab, setSelected
 
                     <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'inital': 'center', px: 2.5 }}>
 
-                        <Avatar sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>{getInitials(userInfo.first_name, userInfo.last_name)}</Avatar>
-                        <ListItemText primary={userInfo.username} sx={{ opacity: open ? 1 : 0 }} />
+                        <Avatar sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>{userInfo ? getInitials(userInfo.first_name, userInfo.last_name): 'XX'}</Avatar>
+                        <ListItemText primary={ userInfo ? userInfo.username : 'Fetching'} sx={{ opacity: open ? 1 : 0 }} />
 
                     </ListItemButton>
 

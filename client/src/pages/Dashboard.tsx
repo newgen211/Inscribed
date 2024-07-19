@@ -201,21 +201,15 @@ export default function MiniDrawer() {
 
         <Box sx={{ display: 'flex' }}>
             
-            { userInfo ? (
+            <DashboardAppBar open={open} setOpen={setOpen}  />
+            <DashboardDrawer open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} userInfo={userInfo} />
 
-              <>
-                <DashboardAppBar open={open} setOpen={setOpen}  />
-                <DashboardDrawer open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} userInfo={userInfo} />
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+              <DrawerHeader />
+              {renderContent()}
+            </Box>
 
-                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                  <DrawerHeader />
-                  {renderContent()}
-                </Box>
-
-                <FixedThemeToggleButton />
-              </>
-
-            ) : (<CircularProgress />) }
+            <FixedThemeToggleButton />
 
         </Box>
     );
