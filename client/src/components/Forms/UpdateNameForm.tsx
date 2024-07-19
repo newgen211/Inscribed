@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, Box, Button, Grid, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { APIResponse } from '../../types/APIResponse';
@@ -34,6 +34,7 @@ export default function UpdateNameForm() {
     const [serverResponseMessage, setServerResponseMessage] = useState('');         // Holds server error messages
     const [isLoading, setIsLoading] = useState(false);                              // Disables the register button while form is handling a submit
     const [serverResponseCode, setServerResponseCode] = useState(0);                // State to track server response code
+    const [showAlert, setShowAlert] = useState(false);
 
     // Get auth state
     const { logout } = useAuth();
@@ -55,10 +56,9 @@ export default function UpdateNameForm() {
 
             // Retrieve the auth token from local storage
             const token = localStorage.getItem('token');
+            
             if (!token) {
-                setServerResponseMessage('No token found');
-                setIsLoading(false);
-                return;
+                logout();
             }
 
             // Attempt to change user's name
@@ -68,14 +68,15 @@ export default function UpdateNameForm() {
                 }
             });
 
-            console.log('API Response:', response.data);
-
             // Set the server response message
             setServerResponseMessage(response.data.message || 'Name updated successfully');
 
             // Set the response code
             setServerResponseCode(response.data.code);
 
+            // Make sure to set the show alert
+            setShowAlert(true);
+            
         } 
         
         catch (error) {
@@ -108,6 +109,10 @@ export default function UpdateNameForm() {
                 // Set the response code
                 setServerResponseCode(500);
             }
+
+            // Make sure to set the show alert
+            setShowAlert(true);
+            
         } 
         
         finally {
@@ -115,18 +120,24 @@ export default function UpdateNameForm() {
         }
     };
 
+    // Auto-dismiss alert after 5 seconds
+    useEffect(() => {
+        if (showAlert) {
+            const timer = setTimeout(() => setShowAlert(false), 5000);
+            return () => clearTimeout(timer); // Cleanup the timer on component unmount
+        }
+    }, [showAlert]);
+
     return (
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(handleNameChange)}>
 
             {/* Display server response */}
             {
-            serverResponseMessage &&
-                
-                setTimeout(() => {
+                showAlert &&
+                    
                     <Alert severity={serverResponseCode === 200 ? 'success' : 'error'} sx={{mb: 2}}>
-                    {serverResponseMessage}
-                </Alert>
-                }, 5000)
+                        {serverResponseMessage}
+                    </Alert>
 
             }
             <Grid container spacing={2} alignItems="center">
