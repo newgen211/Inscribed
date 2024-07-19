@@ -25,7 +25,7 @@ interface ITab {
 }
 
 /* Set the width of the drawer */
-const drawerWidth = 240;
+export const drawerWidth = 240;
 
 /* Main section tab json */
 const mainSectionTabs = [

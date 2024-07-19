@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import axios, { AxiosResponse } from 'axios';
 import { Box, CircularProgress } from '@mui/material';
@@ -65,7 +65,7 @@ export default function Dashboard() {
   }, [currentTab]);
 
   /* Function to get user data from api call */
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
 
     try {
 
@@ -113,12 +113,13 @@ export default function Dashboard() {
 
     }
 
-  };
+  }, [logout]);
 
   /* Update the userInfo everytime the fetchUserData function is ran */
   useEffect(() => {
 
     fetchUserData();
+    console.log('User Data Fetched');
 
   }, [fetchUserData]);
 
