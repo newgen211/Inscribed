@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import UpdateNameForm from '../Forms/UpdateNameForm';
 import UpdateUsername from '../Forms/UpdateUsernameForm';
 import UpdatePasswordForm from '../Forms/UpdatePasswordForm';
+import Logout from './Logout';
 
 interface SettingsProps {
     userInfo: any
@@ -23,6 +24,9 @@ export default function Settings({userInfo}: SettingsProps) {
 
             {/* Update Password Form */}
             <UpdatePasswordForm />
+
+            {/* Logout */}
+            <Logout />
 
         </Box>
 
