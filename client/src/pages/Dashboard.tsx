@@ -20,9 +20,15 @@ export default function Dashboard() {
 
   /* Define State Variables */
   const [drawerOpen, setDrawerOpen]              = useState<boolean>(false);                 // Drawer open or closed state
-  const [currentTab, setCurrentTab]              = useState<number>(0);                      // Holds the current tab a user is on
   const [fetchingUserInfo, setFetchingUserInfo]  = useState<boolean>(false);                 // State that is true while fetching user info and false when we have it
   const [userInfo, setUserInfo]                  = useState<IUserInfo>();                    // Stores the user's infomation
+
+  const [currentTab, setCurrentTab]              = useState<number>(() => { 
+
+    const storedTab = localStorage.getItem('tab');
+    return storedTab ? Number(storedTab) : 0; 
+
+  }); 
 
   /* Get the logout function from the global auth state */
   const { logout } = useAuth();
@@ -42,6 +48,13 @@ export default function Dashboard() {
     }
 
   };
+
+  /* Store selected tab in localStorage to persist across refreshes */
+  useEffect(() => {
+
+    localStorage.setItem('tab', currentTab.toString());
+
+  }, [currentTab]);
 
   /* Function to get user data from api call */
   const fetchUserData = async () => {
