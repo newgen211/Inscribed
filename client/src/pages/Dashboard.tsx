@@ -144,7 +144,7 @@ export default function MiniDrawer() {
         case 3:
             return <ForYouFeed />;
         case 4:
-            return <Settings />;
+            return <Settings userInfo={userInfo} />;
         default:
             return <Home />;
 

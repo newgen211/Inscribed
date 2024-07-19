@@ -38,7 +38,7 @@ const updateNameController = async (req: CustomRequest, res: Response): Promise<
 
         // Send success response
         const response: APIResponse = {
-            message: 'Users name updated successfully',
+            message: 'Name updated successfully',
             code:    StatusCodes.OK
         };
 
