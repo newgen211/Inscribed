@@ -140,7 +140,7 @@ export default function MiniDrawer() {
       switch(selectedTab) {
 
         case 0:
-            return <Home />;
+            return <Home userInfo={userInfo} />;
         case 1:
             return <Search />;
         case 2:
@@ -150,7 +150,7 @@ export default function MiniDrawer() {
         case 4:
             return <Settings userInfo={userInfo} />;
         default:
-            return <Home />;
+            return <Home userInfo={userInfo} />;
 
       }
 

@@ -32,12 +32,14 @@ const getUserInfo = async (req: CustomRequest, res: Response): Promise<void> => 
             message: 'User data',
             code:    StatusCodes.OK,
             data: {
-                first_name: user.first_name,
-                last_name:  user.last_name,
-                username:   user.username,
-                email:      user.email,
-                bio:        user.bio,
-                verified:   user.account_verified,
+                first_name:      user.first_name,
+                last_name:       user.last_name,
+                username:        user.username,
+                email:           user.email,
+                bio:             user.bio,
+                verified:        user.account_verified,
+                following_count: user.following_count,
+                follower_count:  user.follower_count
             }
         };
 
