@@ -3,7 +3,6 @@ import UpdateNameForm from '../Forms/UpdateNameForm';
 import UpdateUsername from '../Forms/UpdateUsernameForm';
 import UpdatePasswordForm from '../Forms/UpdatePasswordForm';
 import Logout from './Logout';
-import { useAuth } from '../../hooks/useAuth';
 import VerifyAccount from './VerifyAccount';
 
 interface SettingsProps {

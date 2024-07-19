@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useMemo } from 'react';
+import { createContext, useState, ReactNode, useMemo, useEffect } from 'react';
 import { ThemeProvider, createTheme, CssBaseline, ThemeOptions } from '@mui/material';
 import { Theme } from '@mui/system';
 
@@ -64,7 +64,20 @@ const darkThemeOptions: ThemeOptions = {
 export const CustomThemeProvider = ({ children }: ThemeProviderProps) => {
     
     {/* Define State */}
-    const [isDarkMode, setIsDarkMode] = useState(false);                    // State for dark/light mode
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+
+      // Check local storage for theme prefrences
+      const savedMode = localStorage.getItem('themeMode');
+      return savedMode ? JSON.parse(savedMode) : false;
+
+    });                    // State for dark/light mode
+
+    // Update localStorage whenever the theme mode changes
+    useEffect(() => {
+
+      localStorage.setItem('themeMode', JSON.stringify(isDarkMode));
+      
+    }, [isDarkMode]);
 
     {/* Sets the theme options depending on the mode */}
     const theme = useMemo( () => createTheme(isDarkMode ? darkThemeOptions : lightThemeOptions), [isDarkMode] );
