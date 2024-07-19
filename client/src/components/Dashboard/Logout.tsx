@@ -20,7 +20,7 @@ export default function Logout() {
 
     return (
 
-        <Box sx={{ mt: 4, maxWidth: 800, mx: 'auto' }}>
+        <Box>
 
             <Typography variant="h5" component="h2" gutterBottom>
                 Logout

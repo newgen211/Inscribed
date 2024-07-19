@@ -70,7 +70,7 @@ export default function VerifyAccount({email}:{email: string}) {
 
     return (
         
-        <Box sx={{ mt: 4, maxWidth: 800, mx: 'auto' }}>
+        <Box>
 
                 {showAlert && (
                     <Alert severity={serverResponseCode === 200 ? 'success' : 'error'}>

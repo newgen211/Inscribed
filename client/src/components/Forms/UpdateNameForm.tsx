@@ -132,7 +132,7 @@ export default function UpdatePasswordForm() {
 
     return (
         
-        <Box component="form" noValidate onSubmit={handleSubmit(handleNameChange)} sx={{ mt: 4, maxWidth: 800, mx: 'auto' }}>
+        <Box component="form" noValidate onSubmit={handleSubmit(handleNameChange)}>
             
             <Typography variant="h5" component="h2" gutterBottom>
                 Update Password
