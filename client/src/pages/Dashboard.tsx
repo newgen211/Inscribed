@@ -14,6 +14,7 @@ import Settings from '../components/Dashboard/Settings';
 import axios from 'axios';
 import { APIResponse } from '../types/APIResponse';
 import { CircularProgress } from '@mui/material';
+import { useAuth } from '../hooks/useAuth';
 
 /* Interfaces */
 export interface AppBarProps extends MuiAppBarProps {
@@ -130,6 +131,9 @@ export default function MiniDrawer() {
     const [selectedTab, setSelectedTab] = useState<number>(0);        // Selected tab state
     const [userInfo, setUserInfo] = useState<any>(null);              // Stores the user info
 
+    {/* Get the logout from authState */}
+    const { logout } = useAuth();
+
     {/* Determine what component to show */}
     const renderContent = () => {
 
@@ -162,6 +166,10 @@ export default function MiniDrawer() {
           {/* Retrieve the auth token from local storage */}
           const token = localStorage.getItem('token');
 
+          if(!token) {
+            logout();
+          }
+
           {/* Make API call to get user info */}
           const response: APIResponse = await axios.get('/api/user/get-user-info', {
             headers: {
@@ -177,6 +185,8 @@ export default function MiniDrawer() {
         catch(error) {
 
           console.log(`Error fetching user data: ${error}`);
+
+          logout();
 
         }
 
