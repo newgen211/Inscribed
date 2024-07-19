@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import axios, { AxiosResponse } from 'axios';
 import { Box, CircularProgress } from '@mui/material';
 import DashboardDrawer from '../components/Dashboard/DashboardDrawer';
+import DashboardAppbar from '../components/Dashboard/DashboardAppbar';
 
 /* Define Types and Interfaces */
 export interface IUserInfo {
@@ -129,12 +130,18 @@ export default function Dashboard() {
     <Box sx={{ display: 'flex' }}>
 
       {
-        userInfo 
-        ? (<DashboardDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} userInfo={userInfo} fetchUserData={fetchUserData} fetchingUserInfo={fetchingUserInfo} getInitals={getInitals} />) 
-        : (<WaitingSpinner />)
+        userInfo
+        ?
+        (
+          <>
+            <DashboardAppbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} fetchingUserInfo={fetchingUserInfo} userInfo={userInfo} fetchUserData={fetchUserData} />
+            <DashboardDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} userInfo={userInfo} fetchUserData={fetchUserData} fetchingUserInfo={fetchingUserInfo} getInitals={getInitals} />
+          </>
+        )
+        :
+        (<WaitingSpinner />)
       }
       
-
     </Box>
 
   );
