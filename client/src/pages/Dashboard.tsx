@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import axios, { AxiosResponse } from 'axios';
 import { Box, CircularProgress } from '@mui/material';
-import DashboardDrawer from '../components/Dashboard/DashboardDrawer';
+import DashboardDrawer, { DrawerHeader } from '../components/Dashboard/DashboardDrawer';
 import DashboardAppbar from '../components/Dashboard/DashboardAppbar';
+import Settings from '../components/Dashboard/pages/Settings';
 
 /* Define Types and Interfaces */
 export interface IUserInfo {
@@ -51,7 +52,7 @@ export default function Dashboard() {
       case 1:
       case 2:
       case 3:
-      case 4:
+      case 4: return userInfo ? <Settings userInfo={userInfo} /> : null;
       default:
 
     }
@@ -136,6 +137,12 @@ export default function Dashboard() {
           <>
             <DashboardAppbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} fetchingUserInfo={fetchingUserInfo} userInfo={userInfo} fetchUserData={fetchUserData} />
             <DashboardDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} userInfo={userInfo} fetchUserData={fetchUserData} fetchingUserInfo={fetchingUserInfo} getInitals={getInitals} />
+
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+              <DrawerHeader />
+              {renderCurrentTab()}
+            </Box>
+
           </>
         )
         :
