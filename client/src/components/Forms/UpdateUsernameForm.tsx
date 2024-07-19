@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, Box, Button, Grid, TextField } from '@mui/material';
+import { Alert, Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const UpdateUsernameSchema = z.object({
 
@@ -18,7 +19,8 @@ const UpdateUsernameSchema = z.object({
 
 type UpdateUsernameSchema = z.infer<typeof UpdateUsernameSchema>;
 
-export default function UpdateUsername() {
+export default function UpdatePasswordForm() {
+    
     // Define State
     const [serverResponseMessage, setServerResponseMessage] = useState('');         // Holds server error messages
     const [isLoading, setIsLoading] = useState(false);                              // Disables the register button while form is handling a submit
@@ -118,23 +120,27 @@ export default function UpdateUsername() {
 
     }, [showAlert]);
 
-    return (
-        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(handleUsernameChange)}>
 
-            {/* Display server response */}
-            {
-                showAlert &&
-                    
-                    <Alert severity={serverResponseCode === 200 ? 'success' : 'error'} sx={{mb: 2}}>
+    return (
+        
+        <Box component="form" noValidate onSubmit={handleSubmit(handleUsernameChange)} sx={{ mt: 4, maxWidth: 800, mx: 'auto' }}>
+            
+            <Typography variant="h5" component="h2" gutterBottom>
+                Update Password
+            </Typography>
+
+            {/* Alert positioning */}
+            <Box sx={{ mb: 2 }}>
+                {showAlert && (
+                    <Alert severity={serverResponseCode === 200 ? 'success' : 'error'}>
                         {serverResponseMessage}
                     </Alert>
+                )}
+            </Box>
 
-            }
-            <Grid container spacing={2} alignItems="center">
-
-                <Grid item xs={12} sm={4}>
-
-                    {/* User Name Input */}
+            <Grid container spacing={2}>
+                {/* Current Password Input */}
+                <Grid item xs={12} md={4}>
                     <Controller
                         control={control}
                         name='username'
@@ -152,25 +158,22 @@ export default function UpdateUsername() {
                             />
                         )}
                     />
-
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
-
-                    {/* Update Button */}
-                    <Button
-                        type='submit'
-                        fullWidth
-                        variant='contained'
-                        sx={{ height: '56px', my: 2 }}
-                        disabled={!isValid || isLoading}
-                    >
-                        Update Username
-                    </Button>
+                {/* Update Button */}
+                <Grid item xs={12}>
+                    <Box sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' }, mt: 2 }}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: 200 }}
+                            disabled={!isValid || isLoading}
+                        >
+                            Update Username
+                        </Button>
+                    </Box>
                 </Grid>
-
             </Grid>
-
         </Box>
 
     );

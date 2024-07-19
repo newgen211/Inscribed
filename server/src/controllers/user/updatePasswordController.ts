@@ -37,7 +37,7 @@ const updatePasswordController = async (req: CustomRequest, res: Response): Prom
 
             const response: APIResponse = {
                 message: 'Current password incorrect',
-                code:    StatusCodes.UNAUTHORIZED
+                code:    StatusCodes.UNAUTHORIZED,
             };
 
             res.status(response.code).json(response);
