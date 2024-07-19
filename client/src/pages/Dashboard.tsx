@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import axios, { AxiosResponse } from 'axios';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
 import DashboardDrawer, { DrawerHeader } from '../components/Dashboard/DashboardDrawer';
 import DashboardAppbar from '../components/Dashboard/DashboardAppbar';
 import Settings from '../components/Dashboard/pages/Settings';
@@ -21,7 +21,7 @@ export interface IUserInfo {
 export default function Dashboard() {
 
   /* Define State Variables */
-  const [drawerOpen, setDrawerOpen]              = useState<boolean>(true);                 // Drawer open or closed state
+  const [drawerOpen, setDrawerOpen]              = useState<boolean>(false);                 // Drawer open or closed state
   const [fetchingUserInfo, setFetchingUserInfo]  = useState<boolean>(false);                 // State that is true while fetching user info and false when we have it
   const [userInfo, setUserInfo]                  = useState<IUserInfo>();                    // Stores the user's infomation
 
