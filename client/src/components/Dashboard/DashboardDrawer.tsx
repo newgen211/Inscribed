@@ -10,7 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PublicIcon from '@mui/icons-material/Public';
 
-export default function DashboardDrawer({open, setOpen, selectedTab, setSelectedTab, userInfo}: DashboardDrawerProps) {
+export default function DashboardDrawer({open, setOpen, selectedTab, setSelectedTab, userInfo, fetchUserInfo}: DashboardDrawerProps) {
 
     /* Function to close drawer */
     const handleDrawerClose = () => setOpen(false);

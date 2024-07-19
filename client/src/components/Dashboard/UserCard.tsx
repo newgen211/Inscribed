@@ -1,17 +1,25 @@
 import { Box, Card, CardContent, Typography, Avatar, Grid, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { useState } from 'react';
+import EditBio from '../Forms/EditBio';
 
 interface UserCardProps {
-  userInfo: any
+  userInfo: any,
+  fetchUserInfo: () => void;
 }
 
-export default function UserCard({ userInfo }: UserCardProps) {
+export default function UserCard({ userInfo, fetchUserInfo }: UserCardProps) {
+
+  /* Define State */
+  const [editBio, setEditBio] = useState<boolean>(false);
 
   /* Get user's initials */
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`;
   };
 
+  /* Handle Edit Bio Modal Open */
+  const handleEditBioModalOpen = () => setEditBio(true);
 
   return (
 
@@ -50,9 +58,11 @@ export default function UserCard({ userInfo }: UserCardProps) {
 
             <Grid item>
 
-              <IconButton size="small" sx={{ ml: 1 }}>
+              <IconButton size="small" sx={{ ml: 1 }} onClick={handleEditBioModalOpen}>
                 <EditIcon fontSize="small" />
               </IconButton>
+
+              <EditBio editBio={editBio} setEditBio={setEditBio} fetchUserInfo={fetchUserInfo} />
 
             </Grid>
 

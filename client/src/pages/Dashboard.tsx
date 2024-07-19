@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -32,6 +32,7 @@ export interface DashboardDrawerProps {
     selectedTab: number;
     setSelectedTab: (selectedTab: number) => void;
     userInfo: any;
+    fetchUserInfo: () => void;
 }
 
 /* Define Constants */
@@ -140,7 +141,7 @@ export default function MiniDrawer() {
       switch(selectedTab) {
 
         case 0:
-            return <Home userInfo={userInfo} />;
+            return <Home userInfo={userInfo} fetchUserInfo={fetchUserInfo} />;
         case 1:
             return <Search />;
         case 2:
@@ -150,51 +151,44 @@ export default function MiniDrawer() {
         case 4:
             return <Settings userInfo={userInfo} />;
         default:
-            return <Home userInfo={userInfo} />;
+            return <Home userInfo={userInfo} fetchUserInfo={fetchUserInfo} />;
 
       }
 
     };
 
+    /* Fetch user info function */
+    const fetchUserInfo = useCallback(async () => {
+      try {
+        {/* Retrieve the auth token from local storage */}
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          logout();
+        }
+
+        {/* Make API call to get user info */}
+        const response: APIResponse = await axios.get('/api/user/get-user-info', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        {/* Store the user info */}
+        setUserInfo(response.data.data);
+
+      } catch (error) {
+        console.log(`Error fetching user data: ${error}`);
+        logout();
+      }
+    }, [logout]);
+
     {/* Get the user info on page load */}
     useEffect(() => {
 
-      const getUserInfo = async () => {
+      fetchUserInfo();
 
-        try {
-
-          {/* Retrieve the auth token from local storage */}
-          const token = localStorage.getItem('token');
-
-          if(!token) {
-            logout();
-          }
-
-          {/* Make API call to get user info */}
-          const response: APIResponse = await axios.get('/api/user/get-user-info', {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-
-          {/* Store the user info */}
-          setUserInfo(response.data.data);
-
-        }
-        
-        catch(error) {
-
-          console.log(`Error fetching user data: ${error}`);
-
-          logout();
-
-        }
-
-      };
-
-      getUserInfo();
-
-    }, []);
+    }, [fetchUserInfo]);
 
     {/* Dashboard JSX */}
     return (
@@ -202,7 +196,7 @@ export default function MiniDrawer() {
         <Box sx={{ display: 'flex' }}>
             
             <DashboardAppBar open={open} setOpen={setOpen}  />
-            <DashboardDrawer open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} userInfo={userInfo} />
+            <DashboardDrawer open={open} setOpen={setOpen} selectedTab={selectedTab} setSelectedTab={setSelectedTab} userInfo={userInfo} fetchUserInfo={fetchUserInfo} />
 
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
               <DrawerHeader />
