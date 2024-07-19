@@ -129,7 +129,7 @@ export default function UpdatePasswordForm() {
                 Update Password
             </Typography>
 
-            {/* Alert positioning */}
+            {/* Server Error */}
             <Box sx={{ mb: 2 }}>
                 {showAlert && (
                     <Alert severity={serverResponseCode === 200 ? 'success' : 'error'}>

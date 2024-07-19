@@ -1,8 +1,10 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import UpdateNameForm from '../Forms/UpdateNameForm';
 import UpdateUsername from '../Forms/UpdateUsernameForm';
 import UpdatePasswordForm from '../Forms/UpdatePasswordForm';
 import Logout from './Logout';
+import { useAuth } from '../../hooks/useAuth';
+import VerifyAccount from './VerifyAccount';
 
 interface SettingsProps {
     userInfo: any
@@ -27,6 +29,9 @@ export default function Settings({userInfo}: SettingsProps) {
 
             {/* Logout */}
             <Logout />
+
+            {/* Verify Account */}
+            {!userInfo.verified && <VerifyAccount email={userInfo.email} />}
 
         </Box>
 

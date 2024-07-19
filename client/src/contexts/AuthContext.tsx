@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface AuthContextType {
@@ -16,11 +17,37 @@ export default function AuthProvider({ children }: any) {
     // Use the useEffect hook to check if a token is stored in local storage
     useEffect(() => {
 
-        const token = localStorage.getItem('token');
+        const token: string | null = localStorage.getItem('token');
         
-        // If a token is found, set the isAuthenticated state to true
-        if (token) {
-            setIsAuthenticated(true);
+        try {
+
+            // If a token is found, set the isAuthenticated state to true
+            if (token) {
+
+                // Decode the jwt
+                const decoded: { userId: string, account_verified: boolean, exp: number } = jwtDecode(token);
+
+                // Check if the token is expired
+                if(decoded.exp * 1000 > Date.now()) {
+                    
+                    setIsAuthenticated(true);
+
+                }
+                
+                else {
+
+                    localStorage.removeItem('token');
+
+                }
+                
+            }
+
+        }
+
+        catch(error) {
+
+            localStorage.removeItem('token');
+
         }
 
     }, []);

@@ -36,7 +36,8 @@ const getUserInfo = async (req: CustomRequest, res: Response): Promise<void> => 
                 last_name:  user.last_name,
                 username:   user.username,
                 email:      user.email,
-                bio:        user.bio
+                bio:        user.bio,
+                verified:   user.account_verified,
             }
         };
 
