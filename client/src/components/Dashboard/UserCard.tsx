@@ -16,7 +16,7 @@ export default function UserCard({ userInfo }: UserCardProps) {
   return (
 
     <Card>
-      <CardContent>
+      <CardContent sx={{mx: 'auto', maxWidth: 500}}>
         <Grid container spacing={2} alignItems="center">
           <Grid item>
             <Avatar>{userInfo ? getInitials(userInfo.first_name, userInfo.last_name) : 'XX'}</Avatar>
