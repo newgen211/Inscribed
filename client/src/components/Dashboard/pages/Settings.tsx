@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { IUserInfo } from '../../../pages/Dashboard';
+import UpdateNameForm from '../forms/UpdateName/UpdateNameForm';
 
 /* Define types and interfaces */
 interface ISettingsProps {
@@ -14,6 +15,9 @@ export default function Settings(props: ISettingsProps) {
 
             {/* Settings Title Page */}
             <Typography variant='h4' component='h1'>{props.userInfo.first_name}'s Profile Settings</Typography>
+
+            {/* Update Name Form */}
+            <UpdateNameForm />
 
         </Box>
 
