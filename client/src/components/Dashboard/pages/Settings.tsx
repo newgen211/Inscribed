@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { IUserInfo } from '../../../pages/Dashboard';
 import UpdateNameForm from '../forms/UpdateName/UpdateNameForm';
+import UpdateUsernameForm from '../forms/UpdateUsername/UpdateUsernameForm';
 
 /* Define types and interfaces */
 interface ISettingsProps {
@@ -18,6 +19,9 @@ export default function Settings(props: ISettingsProps) {
 
             {/* Update Name Form */}
             <UpdateNameForm />
+
+            {/* Update Username Form */}
+            <UpdateUsernameForm />
 
         </Box>
 
