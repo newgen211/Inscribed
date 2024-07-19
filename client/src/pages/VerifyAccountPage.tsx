@@ -2,7 +2,6 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CheckCircleOutline, Cancel } from '@mui/icons-material';
 import axios from 'axios';
-import { useAuth } from '../hooks/useAuth';
 import { useLocation } from 'react-router-dom';
 
 export default function VerifyAccountPage() {
