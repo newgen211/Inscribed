@@ -6,6 +6,7 @@ import RequestPasswordResetPage from './pages/RequestPasswordResetPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import ProtectedRoute from './components/utils/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
+import VerifyAccountPage from './pages/VerifyAccountPage';
 
 export default function App() {
 
@@ -22,6 +23,7 @@ export default function App() {
         <Route path='/request-password-reset' element={<RequestPasswordResetPage />} />
         <Route path='/reset-email-sent' element={<SuccessPage title='Password Reset Email Sent' message='If the email belongs to a valid account, then the email is on the way' linkTitle='To Home' redirectLink='/' />} />
         <Route path='/reset-password' element={<ResetPasswordPage />} />
+        <Route path='/verify-account' element={<VerifyAccountPage />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
