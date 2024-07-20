@@ -1,7 +1,13 @@
+import { useCallback, useState } from 'react';
 import { Avatar, Box, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Drawer as MuiDrawer } from '@mui/material';
 import { IUserInfo } from '../../pages/Dashboard';
-import { CSSObject, Theme, useTheme } from '@mui/material/styles';
+import { CSSObject, Theme, useTheme,  } from '@mui/material/styles';
 import { ChevronLeft, ChevronRight, Home, Search, PeopleAlt, Public, Settings, Create } from '@mui/icons-material';
+import { Alert, Button, TextField, Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 
 /* Define Types and interfaces */
 export interface IDashboardDrawerProps {
@@ -136,6 +142,64 @@ export default function DashboardDrawer(props:IDashboardDrawerProps) {
     /* Get theme object to access its properties */
     const theme = useTheme();
 
+    /* New Post button functions */
+    const CreateNewPostSchema = z.object({
+
+        content: z.string().trim()
+            .min(1, { message: 'Post cannot be empty' })
+            .max(255, { message: 'Post cannont be longer than 255 characters' })
+    
+    });
+    
+    type CreateNewPostSchema = z.infer<typeof CreateNewPostSchema>;
+    
+    const token: string = "" + localStorage.getItem('token');
+    
+    const [dialogOpen, setDialogOpen] = useState(false);
+    
+    /* Server Error State */
+    const [serverErrorMessage, setServerErrorMessage] = useState('');
+    
+    /* Loading state */
+    const [isLoading, setLoading] = useState(false);
+    
+    /* Dialog open/close */
+    const handleClickOpen = () => {
+      setDialogOpen(true);
+    };
+    
+    const handleClose = () => {
+      setDialogOpen(false);
+    };
+    
+     /* Form handler for new post dialog */
+    
+    const { handleSubmit, control, formState: {errors, isValid} } = useForm({
+      mode: 'all',
+      defaultValues: { content: '' },
+      resolver: zodResolver(CreateNewPostSchema),
+    });
+    
+    
+    const handlePostSubmit = useCallback( async (values: CreateNewPostSchema) => {
+      setLoading(true);
+      
+        try {
+          await axios.post('/api/user/new-post', values, { headers: {"Content-Type": "application/json", "Authorization": "Bearer " + token} });
+        }
+        catch (error) {
+          if(axios.isAxiosError(error) && error.response) {
+              const response = error.response.data;
+              setServerErrorMessage(response.message);
+          }
+        }
+        finally {
+          setLoading(false);
+          handleClose();
+        }
+      
+    }, []); 
+
     return (
 
         <Drawer variant='permanent' open={props.drawerOpen}>
@@ -170,20 +234,63 @@ export default function DashboardDrawer(props:IDashboardDrawerProps) {
             <Box sx={{ flexGrow: 1 }} />
             <Divider />
 
-            {/* New Post Section */}
+            {/* New Post section */}
             <List>
 
                 <ListItem disablePadding sx={{display: 'block'}}>
 
-                    <ListItemButton sx={{ minHeight: 48, justifyContent: props.drawerOpen ? 'initial': 'center', px: 2.5 }} onClick={() => props.setNewPostModalOpen(true)}>
+                    <ListItemButton sx={{ minHeight: 48, justifyContent: props.drawerOpen ? 'inital': 'center', px: 2.5 }} onClick={handleClickOpen}>
 
                         <ListItemIcon sx={{ minWidth: 0, mr: props.drawerOpen ? 3 : 'auto', justifyContent: 'center' }}><Create /></ListItemIcon>
-                        <ListItemText primary='New Post' sx={{ opacity: props.drawerOpen ? 1 : 0 }} />
+                        <ListItemText primary='New Post' sx={{ opacity: props.drawerOpen ? 1 : 0 }} />  
 
                     </ListItemButton>
 
-                    {/* New Post Modal */}
-                    {/* <NewPostForm newPostModalOpen={props.newPostModalOpen} setNewPostModalOpen={props.setNewPostModalOpen} serverResponseMessage={props.serverResponseMessage} setServerResponseMessage={props.setServerResponseMessage} serverResponseCode={props.serverResponseCode} setServerResponseCode={props.setServerResponseCode} showAlert={props.showAlert} setShowAlert={props.setShowAlert} /> */}
+                    <Dialog
+                        open={dialogOpen}
+                        onClose={handleClose}
+                        fullWidth
+                        maxWidth={'md'}
+                        component='form'
+                        onSubmit={handleSubmit(handlePostSubmit)}
+                    >
+                        <DialogTitle>New Post</DialogTitle>
+                        <DialogContent>
+                            {serverErrorMessage && (
+                                <Alert severity="error" sx={{ width: '100%', my: 2 }}>
+                                    {serverErrorMessage}
+                                </Alert>
+                            )}
+                            <Controller
+                                name='content'
+                                control={ control }
+                                render={({field}) => (
+                                    <TextField
+                                    {...field}
+                                    inputProps={{
+                                        style: { fontSize: 18 }
+                                    }}
+                                    InputLabelProps={{
+                                        style: { fontSize: 18 }
+                                    }}
+                                    autoFocus
+                                    required
+                                    margin="dense"
+                                    id="content"
+                                    name="content"
+                                    label="Add your post..."
+                                    fullWidth
+                                    multiline
+                                    variant="standard"
+                                    />
+                                )}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button type="button" onClick={handleClose}>Cancel</Button>
+                            <Button type="submit" variant="contained" disabled={!isValid || isLoading}>Post</Button>
+                        </DialogActions>
+                    </Dialog>
 
                 </ListItem>
 
