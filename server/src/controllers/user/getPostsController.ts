@@ -2,49 +2,89 @@ import { StatusCodes } from 'http-status-codes';
 import { APIResponse } from '../../types/APIResponse';
 import { CustomRequest, CustomJwtPayload } from '../../types/CustomRequest';
 import { Response } from 'express';
-import { IPost, Post } from '../../models/post';
+import { Post } from '../../models/post';
+
+import mongoose from 'mongoose';
 
 const getPostsController = async (req: CustomRequest, res: Response): Promise<void> => {
-
     try {
-
-        // Get the user id from the request
         const userId: string = (req.user as CustomJwtPayload).userId;
+        const page: number = parseInt(req.query.page as string, 10) || 1;
+        const limit: number = parseInt(req.query.limit as string, 10) || 10;
+        
+        const posts = await Post.aggregate([
 
-        // Pagination parameters
-        const page = parseInt(req.query.page as string) || 1;
-        const limit = 10;
-        const skip = (page - 1) * limit;
+            // Match the posts by userId
+            { $match: { userId: new mongoose.Types.ObjectId(userId) } },
 
-        // Fetch post documents with pagination
-        const posts: IPost[] = await Post.find({ userId }).limit(limit).skip(skip);
+            // Pagination logic
+            { $skip: (page - 1) * limit },
+            { $limit: limit },
 
-        // Retrieve the total count of posts for the user for pagination data
-        const totalPosts = await Post.countDocuments({ userId });
+            // Join with the User collection to fetch the username
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'user_info'
+                }
+            },
 
-        // Return paginated posts along with pagination info
-        const response: APIResponse = {
-            message: 'User Posts',
-            code: 200,
-            data: {
-                posts,
-                currentPage: page,
-                totalPages: Math.ceil(totalPosts / limit),
-                totalPosts
+            // Unwind the result since lookup results in an array
+            { $unwind: '$user_info' },
+
+            // Join with the Like collection to count likes and check if the current user liked the post
+            {
+                $lookup: {
+                    from: 'likes',
+                    localField: '_id',
+                    foreignField: 'postId',
+                    as: 'likes_info'
+                }
+            },
+
+            // Add computed fields
+            {
+                $addFields: {
+                    number_of_likes: { $size: '$likes_info' },
+                    did_i_like_post: {
+                        $in: [new mongoose.Types.ObjectId(userId), '$likes_info.userId']
+                    },
+                    username: '$user_info.username',
+                    post_belongs_to_me: { $eq: ['$userId', new mongoose.Types.ObjectId(userId)] },
+                    time_posted: '$created_at',
+                    user_id: '$userId',
+                    post_content: '$content'
+                }
+            },
+
+            // Select the required fields
+            {
+                $project: {
+                    user_id: 1,
+                    time_posted: 1,
+                    post_belongs_to_me: 1,
+                    username: 1,
+                    post_content: 1,
+                    number_of_likes: 1,
+                    did_i_like_post: 1,
+                }
             }
+            
+        ]);
+
+        const response: APIResponse = {
+            message: 'User posts',
+            code:    StatusCodes.OK,
+            data:    posts
         };
 
         res.status(response.code).json(response);
         return;
+    } catch (error) {
+        console.error(`Error while getting user posts: ${error}`);
 
-    }
-
-    catch(error) {
-
-        // Log error
-        console.error(`Error while getting posts: ${error}`);
-
-        // Send error response
         const response: APIResponse = {
             message: 'Internal Server Error',
             code:    StatusCodes.INTERNAL_SERVER_ERROR
@@ -52,9 +92,7 @@ const getPostsController = async (req: CustomRequest, res: Response): Promise<vo
 
         res.status(response.code).json(response);
         return;
-
     }
-
 };
 
 export default getPostsController;
