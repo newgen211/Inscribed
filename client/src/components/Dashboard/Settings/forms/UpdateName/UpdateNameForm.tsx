@@ -7,8 +7,12 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../../../../hooks/useAuth'; 
 import axios, { AxiosResponse } from 'axios';
 
+/* Define types and interfaces */
+interface IUpdateNameFormProps {
+    fetchUserData    : () => void;
+};
 
-export default function UpdateNameForm() {
+export default function UpdateNameForm(props: IUpdateNameFormProps) {
 
     /* Define State Variables */
     const [isLoading, setIsLoading]                         = useState<boolean>(false);
@@ -46,6 +50,9 @@ export default function UpdateNameForm() {
             // Set the response code and server message
             setServerResponseCode(response.data.code);
             setServerResponseMessage(response.data.message);
+
+            // Get the new user data
+            props.fetchUserData();
 
         }
 

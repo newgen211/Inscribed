@@ -7,8 +7,12 @@ import axios, { AxiosResponse } from 'axios';
 import { Alert, Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
+/* Define types and interfaces */
+interface IUpdatePasswordFormProps {
+    fetchUserData    : () => void;
+};
 
-export default function UpdatePasswordForm() {
+export default function UpdatePasswordForm(props: IUpdatePasswordFormProps) {
 
     /* Define State Variables */
     const [isLoading, setIsLoading]                         = useState<boolean>(false);
@@ -49,6 +53,9 @@ export default function UpdatePasswordForm() {
             // Set the response code and server message
             setServerResponseCode(response.data.code);
             setServerResponseMessage(response.data.message);
+
+            // Get new user data
+            props.fetchUserData();
 
         }
 

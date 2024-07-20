@@ -6,8 +6,12 @@ import { UpdateUsernameSchema } from './schema';
 import axios, { AxiosResponse } from 'axios';
 import { Alert, Box, Button, Grid, TextField, Typography } from '@mui/material';
 
+/* Defines types and interfaces */
+interface IUpdateUsernameFormProps {
+    fetchUserData    : () => void;
+};
 
-export default function UpdateUsernameForm() {
+export default function UpdateUsernameForm(props: IUpdateUsernameFormProps) {
 
     /* Define State Variables */
     const [isLoading, setIsLoading]                         = useState<boolean>(false);
@@ -45,6 +49,9 @@ export default function UpdateUsernameForm() {
             // Set the response code and server message
             setServerResponseCode(response.data.code);
             setServerResponseMessage(response.data.message);
+
+            // Get the new user data
+            props.fetchUserData();
 
         }
 

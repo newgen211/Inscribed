@@ -23,13 +23,13 @@ export default function Settings(props: ISettingsProps) {
             <Typography variant='h4' component='h1'>{props.userInfo.first_name}'s Profile Settings</Typography>
 
             {/* Update Name Form */}
-            <UpdateNameForm />
+            <UpdateNameForm fetchUserData={props.fetchUserData} />
 
             {/* Update Username Form */}
-            <UpdateUsernameForm />
+            <UpdateUsernameForm fetchUserData={props.fetchUserData} />
 
             {/* Update Password Form */}
-            <UpdatePasswordForm />
+            <UpdatePasswordForm fetchUserData={props.fetchUserData} />
 
             {/* Verify Your Account */}
             {!props.userInfo.verified && <VerifyAccount userInfo={props.userInfo} fetchUserData={props.fetchUserData} />}
