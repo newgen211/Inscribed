@@ -49,7 +49,7 @@ export default function Dashboard() {
 
     switch(currentTab) {
 
-      case 0: return userInfo ? <Home userInfo={userInfo} fetchUserData={fetchUserData} /> : null;
+      case 0: return userInfo ? <Home userInfo={userInfo} fetchUserData={fetchUserData} getInitals={getInitals} /> : null;
       case 1:
       case 2:
       case 3:
