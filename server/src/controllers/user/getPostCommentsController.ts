@@ -11,8 +11,18 @@ const getPostCommentsController = async (req: CustomRequest, res: Response): Pro
         // Get the userId from the request
         const userId: string = (req.user as CustomJwtPayload).userId;
 
-        // Get postId from request body
-        const { postId } = req.body;
+        // Get postId from query parameters
+        const postId = req.query.postId as string;
+        
+        // Validate postId
+        if (!postId) {
+            const response: APIResponse = {
+                message: 'postId is required',
+                code: StatusCodes.BAD_REQUEST,
+            };
+            res.status(response.code).json(response);
+            return;
+        }
 
         // Pagination parameters
         const page = parseInt(req.query.page as string) || 1;

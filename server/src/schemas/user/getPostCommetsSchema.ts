@@ -2,8 +2,10 @@ import { z } from 'zod';
 
 export const GetPostCommentsSchema = z.object({
 
-    postId: z.string().trim()
-        .min(1, { message: 'Post ID is required' })
+    query: z.object({
+        postId: z.string().nonempty({ message: 'Required' }),
+        page: z.string().optional(),
+    }),
 
 });
 

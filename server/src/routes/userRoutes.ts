@@ -47,7 +47,7 @@ userRouter.post('/unlike-post', isLoggedIn, validateRequestInput(LikePostSchema)
 userRouter.post('/create-comment', isLoggedIn, validateRequestInput(CreateCommentSchema), createCommentController);
 userRouter.post('/delete-comment', isLoggedIn, validateRequestInput(DeleteCommentSchema), deleteCommentController);
 userRouter.post('/delete-post', isLoggedIn, validateRequestInput(DeletePostSchema), deletePostController);
-userRouter.get('/get-post-comments', isLoggedIn, validateRequestInput(GetPostCommentsSchema), getPostCommentsController);
+userRouter.get('/get-post-comments', isLoggedIn, getPostCommentsController);
 userRouter.post('/follow', isLoggedIn, validateRequestInput(FollowUserSchema), followUserController);
 userRouter.post('/unfollow', isLoggedIn, validateRequestInput(FollowUserSchema), unfollowUserController);
 userRouter.get('/get-followers', isLoggedIn, getFollowersController);
