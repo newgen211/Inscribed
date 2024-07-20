@@ -5,15 +5,23 @@ import { ChevronLeft, ChevronRight, Home, Search, PeopleAlt, Public, Settings, C
 
 /* Define Types and interfaces */
 export interface IDashboardDrawerProps {
-    drawerOpen       : boolean;
-    setDrawerOpen    : (drawerOpen: boolean) => void;
-    currentTab       : number;
-    setCurrentTab    : (currentTab: number) => void;
-    handleTabClick   : (tab_number: number) => void;
-    fetchingUserInfo : boolean;
-    userInfo         : IUserInfo;
-    fetchUserData    : () => void;
-    getInitals       : (first_name: string, last_name: string) => string;
+    drawerOpen               : boolean;
+    setDrawerOpen            : (drawerOpen: boolean) => void;
+    currentTab               : number;
+    setCurrentTab            : (currentTab: number) => void;
+    handleTabClick           : (tab_number: number) => void;
+    fetchingUserInfo         : boolean;
+    userInfo                 : IUserInfo;
+    fetchUserData            : () => void;
+    getInitals               : (first_name: string, last_name: string) => string;
+    newPostModalOpen         : boolean;
+    setNewPostModalOpen      : (newPostModalOpen: boolean) => void;
+    serverResponseMessage    : string;
+    setServerResponseMessage : (serverResponseMessage: string) => void;
+    serverResponseCode       : number;
+    setServerResponseCode    : (serverResponseCode: number) => void;
+    showAlert                : boolean;
+    setShowAlert             : (showAlert: boolean) => void;
 };
 
 interface ITab {
@@ -167,12 +175,15 @@ export default function DashboardDrawer(props:IDashboardDrawerProps) {
 
                 <ListItem disablePadding sx={{display: 'block'}}>
 
-                    <ListItemButton sx={{ minHeight: 48, justifyContent: props.drawerOpen ? 'initial': 'center', px: 2.5 }}>
+                    <ListItemButton sx={{ minHeight: 48, justifyContent: props.drawerOpen ? 'initial': 'center', px: 2.5 }} onClick={() => props.setNewPostModalOpen(true)}>
 
                         <ListItemIcon sx={{ minWidth: 0, mr: props.drawerOpen ? 3 : 'auto', justifyContent: 'center' }}><Create /></ListItemIcon>
                         <ListItemText primary='New Post' sx={{ opacity: props.drawerOpen ? 1 : 0 }} />
 
                     </ListItemButton>
+
+                    {/* New Post Modal */}
+                    {/* <NewPostForm newPostModalOpen={props.newPostModalOpen} setNewPostModalOpen={props.setNewPostModalOpen} serverResponseMessage={props.serverResponseMessage} setServerResponseMessage={props.setServerResponseMessage} serverResponseCode={props.serverResponseCode} setServerResponseCode={props.setServerResponseCode} showAlert={props.showAlert} setShowAlert={props.setShowAlert} /> */}
 
                 </ListItem>
 

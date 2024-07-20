@@ -1,24 +1,18 @@
-import errorsToRecord from '@hookform/resolvers/io-ts/dist/errorsToRecord.js';
-import { Alert, Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useAuth } from '../../../../../hooks/useAuth';
 import { UpdateNameSchema } from './schema';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { useAuth } from '../../../../../hooks/useAuth'; 
 import axios, { AxiosResponse } from 'axios';
+import { APIResponse } from '../../../../../types/APIResponse';
+import { Alert, Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { ISettingsProps } from '../../Settings';
 
-/* Define types and interfaces */
-interface IUpdateNameFormProps {
-    fetchUserData    : () => void;
-};
 
-export default function UpdateNameForm(props: IUpdateNameFormProps) {
+const UpdateNameForm: React.FC<ISettingsProps> = (props) => {
 
-    /* Define State Variables */
-    const [isLoading, setIsLoading]                         = useState<boolean>(false);
-    const [serverResponseMessage, setServerResponseMessage] = useState<string>('');
-    const [serverResponseCode, setServerResponseCode]       = useState<number>(0);
-    const [showAlert, setShowAlert]                         = useState<boolean>(false);
+    /* Define local state */
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     /* Get the logout function from the global auth state */
     const { logout } = useAuth();
@@ -26,7 +20,7 @@ export default function UpdateNameForm(props: IUpdateNameFormProps) {
     /* React Hook Form Configuration */
     const { handleSubmit, control, formState: { errors, isValid }, setError } = useForm<UpdateNameSchema>({
         mode: 'all',
-        defaultValues: { first_name: '', last_name: '' },
+        defaultValues: { first_name: props.userData.first_name, last_name: props.userData.last_name },
         resolver: zodResolver(UpdateNameSchema),
     });
 
@@ -45,15 +39,14 @@ export default function UpdateNameForm(props: IUpdateNameFormProps) {
             if(!token) logout();
 
             // Attempt to change the user's name
-            const response: AxiosResponse<any, any> = await axios.patch('/api/user/update-name', values, { headers: { Authorization: `Bearer ${token}` } });
+            const response: AxiosResponse<APIResponse> = await axios.patch('/api/user/update-name', values, { headers: { Authorization: `Bearer ${token}` } });
 
             // Set the response code and server message
-            setServerResponseCode(response.data.code);
-            setServerResponseMessage(response.data.message);
+            props.setServerResponseCode(response.data.code);
+            props.setServerResponseMessage(response.data.message);
 
             // Get the new user data
             props.fetchUserData();
-
         }
 
         catch(error) {
@@ -61,10 +54,10 @@ export default function UpdateNameForm(props: IUpdateNameFormProps) {
             if(axios.isAxiosError(error) && error.response) {
 
                 // Set the error message from the error response
-                setServerResponseMessage(error.response.data.message);
+                props.setServerResponseMessage(error.response.data.message);
                 
                 // Set the error code returned
-                setServerResponseCode(error.response.data.code);
+                props.setServerResponseCode(error.response.data.code);
 
                 // If the response if a expired/unauthroized user update the auth state accordingly
                 if(error.response.data.code === 401) logout();
@@ -74,8 +67,8 @@ export default function UpdateNameForm(props: IUpdateNameFormProps) {
             else {
 
                 // Set a general error messge
-                setServerResponseMessage('An unexpected error occured');
-                setServerResponseCode(500);
+                props.setServerResponseMessage('An unexpected error occured');
+                props.setServerResponseCode(500);
 
             }
 
@@ -87,29 +80,15 @@ export default function UpdateNameForm(props: IUpdateNameFormProps) {
             setIsLoading(false);
 
             // Set show alert to true to show server response
-            setShowAlert(true);
+            props.setShowAlert(true);
 
         }
 
     };
 
-    // Auto dismiss the server alert after 5 seconds
-    useEffect(() => {
-
-        if (showAlert) {
-            const timer = setTimeout(() => setShowAlert(false), 5000);
-            return () => clearTimeout(timer);
-        }
-
-    }, [showAlert]);
-
     return (
 
         <Box component="form" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-
-            <Box sx={{ mb: 2 }}>
-                { showAlert && <Alert severity={serverResponseCode === 200 ? 'success' : 'error'}>{serverResponseMessage}</Alert> }
-            </Box>
 
            {/* Form Title */}
            <Typography variant="h5" component="h2" gutterBottom>Update Name</Typography>
@@ -184,3 +163,5 @@ export default function UpdateNameForm(props: IUpdateNameFormProps) {
     );
 
 }
+
+export default UpdateNameForm;

@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import axios, { AxiosResponse } from 'axios';
-import { BottomNavigation, Box, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
-import DashboardDrawer, { DrawerHeader } from '../components/Dashboard/DashboardDrawer';
+import { APIResponse } from '../types/APIResponse';
+import { Box, CircularProgress, useTheme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import DashboardAppbar from '../components/Dashboard/DashboardAppbar';
-import Settings from '../components/Dashboard/Settings/Settings';
-import Home from '../components/Dashboard/Home/Home';
-import BottomNavigationBar from '../components/Dashboard/BottomNavigationBar';
+import DashboardDrawer, { DrawerHeader } from '../components/Dashboard/DashboardDrawer';
 import MobileTopAppbar from '../components/Dashboard/MobileTopAppbar';
+import BottomNavigationBar from '../components/Dashboard/BottomNavigationBar';
+import Settings from '../components/Dashboard/Settings/Settings';
 
+/* Define Types and Interfaces  */
 
-/* Define Types and Interfaces */
 export interface IUserInfo {
   first_name:      string;
   last_name:       string;
@@ -22,76 +23,86 @@ export interface IUserInfo {
   follower_count:   number;
 };
 
+export interface IDashboardState {
+  drawerOpen: boolean;
+  setDrawerOpen: (drawerOpen: boolean) => void;
+  newPostModalOpen: boolean;
+  setNewPostModalOpen: (newPostModalOpen: boolean) => void;
+  fetchingUserData: boolean;
+  setFetchingUserData: (fetchingUserData: boolean) => void;
+  userData: IUserInfo;
+  setUserData: (userData: IUserInfo) => void;
+  currentTab: number;
+  setCurrentTab: (currentTab: number) => void;
+  fetchUserData : () => void;
+}
+
+
 export default function Dashboard() {
 
-  /* Define State Variables */
-  const [drawerOpen, setDrawerOpen]              = useState<boolean>(false);                 // Drawer open or closed state
-  const [fetchingUserInfo, setFetchingUserInfo]  = useState<boolean>(false);                 // State that is true while fetching user info and false when we have it
-  const [userInfo, setUserInfo]                  = useState<IUserInfo>();                    // Stores the user's infomation
 
-  const [currentTab, setCurrentTab]              = useState<number>(() => { 
+  /* Define All Dashboard State */
 
+  const [drawerOpen, setDrawerOpen]                       = useState<boolean>(false);                       // Tracks if the drawer is open or closed
+  
+  const [newPostModalOpen, setNewPostModalOpen]           = useState<boolean>(false);                       // Keeps track if the new post modal is open
+
+  const [fetchingUserData, setFetchingUserData]           = useState<boolean>(false);                       // State to keep track of wheather we are currently fetching user data
+  const [userData, setUserData]                           = useState<IUserInfo>();                          // State to hold the user's profile infomation
+
+  const [serverResponseMessage, setServerResponseMessage] = useState<string>('');                           // Stores the response message from api
+  const [serverResponseCode, setServerResponseCode]       = useState<number>(0);                            // Stores the response code from the response
+  const [showAlert, setShowAlert]                         = useState<boolean>(false);                       // State that holds if we are showing server response
+
+  const [currentTab, setCurrentTab]                       = useState<number>(() => {
     const storedTab = localStorage.getItem('tab');
-    return storedTab ? Number(storedTab) : 0; 
+    return storedTab ? Number(storedTab) : 0;
+  });
 
-  }); 
+  /* Media Query for small screen */
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  /* Get the logout function from the global auth state */
-  const { logout } = useAuth();
+  /* Global Auth State */
 
-  /* Function to change the current tab */
+    const { logout } = useAuth();
+
+
+
+  /* Function to change the current tab and store the tab selection in localstorage for persistance */
+
   const handleTabClick = (tab_number: number) => setCurrentTab(tab_number);
 
-  /* Function to get user's initals */
+  useEffect(() => localStorage.setItem('tab', currentTab.toString()) , [currentTab]);
+
+  /* Function to get the user's intial's */
+  
   const getInitals = (first_name: string, last_name: string): string => {
     return `${first_name.charAt(0)}${last_name.charAt(0)}`;
   };
 
-  /* Condionally render the current tab using the current tab state */
-  const renderCurrentTab = () => {
-
-    switch(currentTab) {
-
-      case 0: return userInfo ? <Home userInfo={userInfo} fetchUserData={fetchUserData} getInitals={getInitals} /> : null;
-      case 1:
-      case 2:
-      case 3:
-      case 4: return userInfo ? <Settings userInfo={userInfo} fetchUserData={fetchUserData} /> : null;
-      default:
-
-    }
-
-  };
-
-  /* Store selected tab in localStorage to persist across refreshes */
-  useEffect(() => {
-
-    localStorage.setItem('tab', currentTab.toString());
-
-  }, [currentTab]);
-
-  /* Function to get user data from api call */
-  const fetchUserData = useCallback(async () => {
+  /* Function to fetch user data */
+  const fetchUserData = useCallback( async () => {
 
     try {
 
       // Set fetching user data state to true
-      setFetchingUserInfo(true);
+      setFetchingUserData(true);
 
       // Get the session token from localstorage
       const token: string | null = localStorage.getItem('token');
 
-      // If there is no token present the user is not logged in so update the global auth state
+      // If there is no token preset, set the global auth state to be logged out
       if(!token) {
         logout();
-        setFetchingUserInfo(false);
+        setFetchingUserData(false);
       }
 
-      // Attempt to fetch the user's info
-      const response: AxiosResponse<any, any> = await axios.get('/api/user/get-user-info', { headers: { Authorization: `Bearer ${token}` } });
+      // Attempt to fetch the user's data
+      const response: AxiosResponse<APIResponse> = await axios.get('/api/user/get-user-info', { headers: { Authorization: `Bearer ${token}` } });
 
-      // Store the user info in the userInfo state
-      setUserInfo(response.data.data);
+      // Store the user's infomation
+      setUserData(response.data.data);
 
     }
 
@@ -99,7 +110,10 @@ export default function Dashboard() {
 
       if(axios.isAxiosError(error) && error.response) {
 
-        console.log(`Error while fetching user data: ${error}`); 
+        console.log(`Error while fetching user data: ${error}`);
+
+        setServerResponseMessage(error.response.data.message);
+        setServerResponseCode(error.response.data.code); 
 
       }
 
@@ -108,6 +122,9 @@ export default function Dashboard() {
 
         console.log('Something went wrong');
 
+        setServerResponseMessage('An unexpected error occured');
+        setServerResponseCode(500); 
+
       }
 
     }
@@ -115,73 +132,99 @@ export default function Dashboard() {
     finally {
 
       // Reset the fetching user state back to false when request complete
-      setFetchingUserInfo(false);
+      setFetchingUserData(false);
+
+      // Set alert state to true to show response
+      setShowAlert(true);
 
     }
 
-  }, [logout]);
+  },[logout]);
 
-  /* Update the userInfo everytime the fetchUserData function is ran */
+  /* Update the userInfo state evertime the fetchUserData function is ran */
+  useEffect(() => { fetchUserData(); }, [fetchUserData]);
+
+  /* Auto dismiss the server response alert after 5 seconds */
   useEffect(() => {
 
-    fetchUserData();
-    console.log('User Data Fetched');
+    if (showAlert) {
+      const timer = setTimeout(() => setShowAlert(false), 5000);
+      return () => clearTimeout(timer);
+    }
 
-  }, [fetchUserData]);
+  }, [showAlert]);
 
-    const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  /* Dashboard JSX */
+  /* Function to determine which page to render */
+  
+  const renderTab = () => {
+
+    switch(currentTab) {
+
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+
+      case 4: return userData ? 
+        <Settings
+          drawerOpen={drawerOpen}
+          setDrawerOpen={setDrawerOpen}
+          newPostModalOpen={newPostModalOpen}
+          setNewPostModalOpen={setNewPostModalOpen}
+          fetchingUserData={fetchingUserData}
+          setFetchingUserData={setFetchingUserData}
+          userData={userData}
+          setUserData={setUserData}
+          currentTab={currentTab}
+          setCurrentTab={setCurrentTab}
+          fetchUserData={fetchUserData}
+        /> 
+        : null
+
+      default:
+
+    }
+
+  };
+
   return (
 
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-
+      
       {
-        userInfo
-        ?
-        (
-          <>
-
-            {!isSmallScreen ? 
+        userData ? 
+        
+        <>
+        
+          {
+            !isSmallScreen ? 
             
-              <>  
-                <DashboardAppbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} fetchingUserInfo={fetchingUserInfo} userInfo={userInfo} fetchUserData={fetchUserData} />
-                <DashboardDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} userInfo={userInfo} fetchUserData={fetchUserData} fetchingUserInfo={fetchingUserInfo} getInitals={getInitals} />
-              </>
-              
-              :
-
-              <>
+            <>
+              <DashboardAppbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} fetchingUserInfo={fetchingUserData} userInfo={userData} fetchUserData={fetchUserData} />
+              <DashboardDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} userInfo={userData} fetchUserData={fetchUserData} fetchingUserInfo={fetchingUserData} getInitals={getInitals} newPostModalOpen={newPostModalOpen} setNewPostModalOpen={setNewPostModalOpen} serverResponseMessage={serverResponseMessage} setServerResponseMessage={setServerResponseMessage} serverResponseCode={serverResponseCode} setServerResponseCode={setServerResponseCode} showAlert={showAlert} setShowAlert={setShowAlert} />
+            </> 
+            
+            : 
+            
+            <>
               <MobileTopAppbar />
               <BottomNavigationBar currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} />
             </>
+          }
 
-            }
-            
-
-            <Box component="main" sx={{ flexGrow: 1, p: 3, pb: isSmallScreen ? 8 : 0 }}>
+          <Box component="main" sx={{ flexGrow: 1, p: 3, pb: isSmallScreen ? 8 : 0 }}>
               <DrawerHeader />
-              {renderCurrentTab()}
-            </Box>
+              {renderTab()}
+          </Box>
 
-          </>
-        )
-        :
-        (<WaitingSpinner />)
-      }
-      
+        </> 
+        
+        : <CircularProgress color="success" /> 
+        
+        }
+
     </Box>
-
-  );
-
-}
-
-function WaitingSpinner() {
-
-  return (
-
-    <CircularProgress color="success" />
 
   );
 
