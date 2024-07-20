@@ -2,12 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import axios, { AxiosResponse } from 'axios';
 import { APIResponse } from '../../../types/APIResponse';
-import { Box, Card, CardActions, CardContent, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, IconButton, Paper, Typography } from '@mui/material';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Favorite, FavoriteBorder, Edit, Delete } from '@mui/icons-material';
+import DeletePostModal from './DeletePostModal';
 
 /* Define types and interfaces */
-interface IPost {
+export interface IPost {
     _id: string;
     user_id: string;
     time_posted: string;
@@ -21,9 +22,10 @@ interface IPost {
 export default function UserPostList() {
 
     /* Define State */
-    const [posts, setPosts]     = useState<IPost[]>([]);
-    const [hasMore, setHasMore] = useState<boolean>(true);
-    const [page, setPage]       = useState<number>(1);
+    const [posts, setPosts]                     = useState<IPost[]>([]);
+    const [hasMore, setHasMore]                 = useState<boolean>(true);
+    const [page, setPage]                       = useState<number>(1);
+    const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
     
     /* Global auth state */
     const { logout } = useAuth();
@@ -161,6 +163,7 @@ export default function UserPostList() {
                 
                 { posts.map(post => (
                     
+                    <>
                     <Card sx={{ my: 2 }}>
 
                         <CardContent>
@@ -192,8 +195,8 @@ export default function UserPostList() {
                                     <Edit />
                                 </IconButton>
 
-                                <IconButton>
-                                    <Delete />
+                                <IconButton onClick={() => setDeleteModalOpen(true)}>
+                                    <Delete color='error' />
                                 </IconButton>
 
                             </Box>
@@ -207,11 +210,16 @@ export default function UserPostList() {
                         </CardActions>
                     </Card>
 
+                    <DeletePostModal deleteModalOpen={deleteModalOpen} setDeleteModalOpen={setDeleteModalOpen} _id={post._id} posts={posts} setPosts={setPosts} />
+                    </>
+
                 )) }
 
             </InfiniteScroll>
 
             : <Typography component='p' variant='body1'>No posts to display.</Typography>}
+
+            
 
         </Box>
 

@@ -74,9 +74,7 @@ export const CustomThemeProvider = ({ children }: ThemeProviderProps) => {
 
     // Update localStorage whenever the theme mode changes
     useEffect(() => {
-
       localStorage.setItem('themeMode', JSON.stringify(isDarkMode));
-      
     }, [isDarkMode]);
 
     {/* Sets the theme options depending on the mode */}
