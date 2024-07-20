@@ -5,6 +5,7 @@ import { Box, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
 import DashboardDrawer, { DrawerHeader } from '../components/Dashboard/DashboardDrawer';
 import DashboardAppbar from '../components/Dashboard/DashboardAppbar';
 import Settings from '../components/Dashboard/Settings/Settings';
+import Home from '../components/Dashboard/Home/Home';
 
 /* Define Types and Interfaces */
 export interface IUserInfo {
@@ -48,7 +49,7 @@ export default function Dashboard() {
 
     switch(currentTab) {
 
-      case 0:
+      case 0: return userInfo ? <Home userInfo={userInfo} fetchUserData={fetchUserData} /> : null;
       case 1:
       case 2:
       case 3:
