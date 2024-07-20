@@ -3,6 +3,7 @@ import { IUserInfo } from '../../../pages/Dashboard';
 import UpdateNameForm from '../forms/UpdateName/UpdateNameForm';
 import UpdateUsernameForm from '../forms/UpdateUsername/UpdateUsernameForm';
 import UpdatePasswordForm from '../forms/UpdatePassword/UpdatePasswordForm';
+import VerifyAccount from '../VerifyAccount';
 
 /* Define types and interfaces */
 interface ISettingsProps {
@@ -26,6 +27,9 @@ export default function Settings(props: ISettingsProps) {
 
             {/* Update Password Form */}
             <UpdatePasswordForm />
+
+            {/* Verify Your Account */}
+            {!props.userInfo.verified && <VerifyAccount userInfo={props.userInfo} />}
 
         </Box>
 
