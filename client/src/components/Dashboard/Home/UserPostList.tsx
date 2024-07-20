@@ -113,6 +113,39 @@ export default function UserPostList() {
 
     };
 
+    /* Handle Unlike */
+    const handleUnlike = async (postId: string) => {
+
+        try {
+
+            // Get the session token from local storage
+            const token: string | null = localStorage.getItem('token');
+
+            // If we don't have a token then we are not logged in so update the global auth state to be logged out
+            if(!token) logout();
+
+            // Attempt to like the post
+            await axios.post('/api/user/unlike-post', {postId: postId}, { headers: { Authorization: `Bearer ${token}` } });
+
+            // Update the affected post
+            setPosts(prevPosts =>
+                prevPosts.map(post =>
+                    post._id === postId
+                        ? { ...post, did_i_like_post: false, number_of_likes: post.number_of_likes - 1 }
+                        : post
+                )
+            );
+
+        }
+
+        catch(error) {
+
+            console.error('Error liking post:', error);
+
+        }
+
+    };
+
 
     return (
 
@@ -150,7 +183,7 @@ export default function UserPostList() {
                             
                             <Box>
 
-                                <IconButton onClick={() => handleLike(post._id)}>
+                                <IconButton onClick={() => post.did_i_like_post ? handleUnlike(post._id) : handleLike(post._id)}>
                                     {post.did_i_like_post ? <Favorite color='primary' /> : <FavoriteBorder color='primary' />}
                                     <Typography component='p'>{post.number_of_likes}</Typography>
                                 </IconButton>
