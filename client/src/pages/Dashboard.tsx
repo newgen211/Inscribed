@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import axios, { AxiosResponse } from 'axios';
-import { Box, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
+import { BottomNavigation, Box, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
 import DashboardDrawer, { DrawerHeader } from '../components/Dashboard/DashboardDrawer';
 import DashboardAppbar from '../components/Dashboard/DashboardAppbar';
 import Settings from '../components/Dashboard/Settings/Settings';
 import Home from '../components/Dashboard/Home/Home';
+import BottomNavigationBar from '../components/Dashboard/BottomNavigationBar';
+import MobileTopAppbar from '../components/Dashboard/MobileTopAppbar';
+
 
 /* Define Types and Interfaces */
 export interface IUserInfo {
@@ -126,20 +129,38 @@ export default function Dashboard() {
 
   }, [fetchUserData]);
 
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   /* Dashboard JSX */
   return (
 
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
 
       {
         userInfo
         ?
         (
           <>
-            <DashboardAppbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} fetchingUserInfo={fetchingUserInfo} userInfo={userInfo} fetchUserData={fetchUserData} />
-            <DashboardDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} userInfo={userInfo} fetchUserData={fetchUserData} fetchingUserInfo={fetchingUserInfo} getInitals={getInitals} />
 
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            {!isSmallScreen ? 
+            
+              <>  
+                <DashboardAppbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} fetchingUserInfo={fetchingUserInfo} userInfo={userInfo} fetchUserData={fetchUserData} />
+                <DashboardDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} userInfo={userInfo} fetchUserData={fetchUserData} fetchingUserInfo={fetchingUserInfo} getInitals={getInitals} />
+              </>
+              
+              :
+
+              <>
+              <MobileTopAppbar />
+              <BottomNavigationBar currentTab={currentTab} setCurrentTab={setCurrentTab} handleTabClick={handleTabClick} />
+            </>
+
+            }
+            
+
+            <Box component="main" sx={{ flexGrow: 1, p: 3, pb: isSmallScreen ? 8 : 0 }}>
               <DrawerHeader />
               {renderCurrentTab()}
             </Box>
