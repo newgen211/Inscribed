@@ -4,6 +4,7 @@ import UpdateNameForm from '../forms/UpdateName/UpdateNameForm';
 import UpdateUsernameForm from '../forms/UpdateUsername/UpdateUsernameForm';
 import UpdatePasswordForm from '../forms/UpdatePassword/UpdatePasswordForm';
 import VerifyAccount from '../VerifyAccount';
+import DeleteAccount from '../DeleteAccount';
 
 /* Define types and interfaces */
 interface ISettingsProps {
@@ -30,6 +31,9 @@ export default function Settings(props: ISettingsProps) {
 
             {/* Verify Your Account */}
             {!props.userInfo.verified && <VerifyAccount userInfo={props.userInfo} />}
+
+            {/* Delete User Account */}
+            <DeleteAccount />
 
         </Box>
 
