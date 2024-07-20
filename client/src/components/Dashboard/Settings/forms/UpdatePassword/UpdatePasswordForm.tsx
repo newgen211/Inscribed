@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../../../hooks/useAuth';
+import { useAuth } from '../../../../../hooks/useAuth';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdatePasswordSchema } from './schema';

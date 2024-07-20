@@ -1,14 +1,13 @@
-import errorsToRecord from '@hookform/resolvers/io-ts/dist/errorsToRecord.js';
-import { Alert, Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
-import { UpdateNameSchema } from './schema';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../../../hooks/useAuth';
+import { useAuth } from '../../../../../hooks/useAuth';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
+import { UpdateUsernameSchema } from './schema';
 import axios, { AxiosResponse } from 'axios';
+import { Alert, Box, Button, Grid, TextField, Typography } from '@mui/material';
 
 
-export default function UpdateNameForm() {
+export default function UpdateUsernameForm() {
 
     /* Define State Variables */
     const [isLoading, setIsLoading]                         = useState<boolean>(false);
@@ -20,14 +19,14 @@ export default function UpdateNameForm() {
     const { logout } = useAuth();
 
     /* React Hook Form Configuration */
-    const { handleSubmit, control, formState: { errors, isValid }, setError } = useForm<UpdateNameSchema>({
+    const { handleSubmit, control, formState: { errors, isValid }, setError } = useForm<UpdateUsernameSchema>({
         mode: 'all',
-        defaultValues: { first_name: '', last_name: '' },
-        resolver: zodResolver(UpdateNameSchema),
+        defaultValues: { username: '' },
+        resolver: zodResolver(UpdateUsernameSchema),
     });
 
-    /* Handle Name Change Form Submit */
-    const handleFormSubmit = async (values: UpdateNameSchema) => {
+    /* Handle Username Form Submit */
+    const handleFormSubmit = async (values: UpdateUsernameSchema) => {
 
         try {
 
@@ -40,8 +39,8 @@ export default function UpdateNameForm() {
             // If there is no token the user is not logged in, so update the auth state accordingly
             if(!token) logout();
 
-            // Attempt to change the user's name
-            const response: AxiosResponse<any, any> = await axios.patch('/api/user/update-name', values, { headers: { Authorization: `Bearer ${token}` } });
+            // Attempt to change the user's username
+            const response: AxiosResponse<any, any> = await axios.patch('/api/user/update-username', values, { headers: { Authorization: `Bearer ${token}` } });
 
             // Set the response code and server message
             setServerResponseCode(response.data.code);
@@ -86,7 +85,7 @@ export default function UpdateNameForm() {
 
     };
 
-    // Auto dismiss the server alert after 5 seconds
+    /* Auto dismiss the server alert after 5 seconds */
     useEffect(() => {
 
         if (showAlert) {
@@ -105,7 +104,7 @@ export default function UpdateNameForm() {
             </Box>
 
            {/* Form Title */}
-           <Typography variant="h5" component="h2" gutterBottom>Update Name</Typography>
+           <Typography variant="h5" component="h2" gutterBottom>Update Username</Typography>
 
            {/* Show any server error messages */}
 
@@ -115,41 +114,18 @@ export default function UpdateNameForm() {
                 {/* First Name Input */}
                 <Grid item xs={12} md={4}>
 
-                    <Controller control={control} name='first_name' render={({field}) => (
+                    <Controller control={control} name='username' render={({field}) => (
 
                         <TextField 
                             {...field}
                             required
                             fullWidth
-                            id='first_name'
-                            name='first_name'
-                            label='First Name'
-                            autoComplete='given-name'
-                            error={!!errors.first_name}
-                            helperText={errors.first_name?.message}
-                        />
-
-                        )}  
-                        
-                    />
-
-                </Grid>
-
-                {/* Last Name Input */}
-                <Grid item xs={12} md={4}>
-
-                    <Controller control={control} name='last_name' render={({field}) => (
-
-                        <TextField 
-                            {...field}
-                            required
-                            fullWidth
-                            id='last_name'
-                            name='last_name'
-                            label='Last Name'
-                            autoComplete='family-name'
-                            error={!!errors.last_name}
-                            helperText={errors.last_name?.message}
+                            id='username'
+                            name='username'
+                            label='Username'
+                            autoComplete='username'
+                            error={!!errors.username}
+                            helperText={errors.username?.message}
                         />
 
                         )}  
@@ -163,7 +139,7 @@ export default function UpdateNameForm() {
 
                     <Box sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' }, mt: 2 }}>
                         
-                        <Button type="submit" variant="contained" sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: 200 }} disabled={!isValid || isLoading}>Update Name</Button>
+                        <Button type="submit" variant="contained" sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: 200 }} disabled={!isValid || isLoading}>Update Username</Button>
 
                     </Box> 
 

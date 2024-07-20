@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 import { Box, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
 import DashboardDrawer, { DrawerHeader } from '../components/Dashboard/DashboardDrawer';
 import DashboardAppbar from '../components/Dashboard/DashboardAppbar';
-import Settings from '../components/Dashboard/pages/Settings';
+import Settings from '../components/Dashboard/Settings/Settings';
 
 /* Define Types and Interfaces */
 export interface IUserInfo {
@@ -52,7 +52,7 @@ export default function Dashboard() {
       case 1:
       case 2:
       case 3:
-      case 4: return userInfo ? <Settings userInfo={userInfo} /> : null;
+      case 4: return userInfo ? <Settings userInfo={userInfo} fetchUserData={fetchUserData} /> : null;
       default:
 
     }

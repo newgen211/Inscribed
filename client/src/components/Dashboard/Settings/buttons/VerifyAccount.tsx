@@ -1,11 +1,12 @@
 import { Alert, Box, Button, Typography } from '@mui/material';
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
-import { IUserInfo } from '../../pages/Dashboard';
+import { IUserInfo } from '../../../../pages/Dashboard';
 
 /* Define types and interfaces */
 interface IVerifyAccountProps {
     userInfo: IUserInfo;
+    fetchUserData: () => void
 };
 
 export default function VerifyAccount(props: IVerifyAccountProps) {

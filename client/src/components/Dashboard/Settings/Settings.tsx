@@ -1,14 +1,16 @@
 import { Box, Typography } from '@mui/material';
-import { IUserInfo } from '../../../pages/Dashboard';
-import UpdateNameForm from '../forms/UpdateName/UpdateNameForm';
-import UpdateUsernameForm from '../forms/UpdateUsername/UpdateUsernameForm';
-import UpdatePasswordForm from '../forms/UpdatePassword/UpdatePasswordForm';
-import VerifyAccount from '../VerifyAccount';
-import DeleteAccount from '../DeleteAccount';
+import Dashboard, { IUserInfo } from '../../../pages/Dashboard';
+import UpdateNameForm from './forms/UpdateName/UpdateNameForm';
+import UpdateUsernameForm from './forms/UpdateUsername/UpdateUsernameForm';
+import UpdatePasswordForm from './forms/UpdatePassword/UpdatePasswordForm';
+import VerifyAccount from './buttons/VerifyAccount';
+import DeleteAccount from './buttons/DeleteAccount';
+import Logout from './buttons/Logout';
 
 /* Define types and interfaces */
 interface ISettingsProps {
-    userInfo: IUserInfo
+    userInfo         : IUserInfo;
+    fetchUserData    : () => void;
 };
 
 export default function Settings(props: ISettingsProps) {
@@ -30,10 +32,13 @@ export default function Settings(props: ISettingsProps) {
             <UpdatePasswordForm />
 
             {/* Verify Your Account */}
-            {!props.userInfo.verified && <VerifyAccount userInfo={props.userInfo} />}
+            {!props.userInfo.verified && <VerifyAccount userInfo={props.userInfo} fetchUserData={props.fetchUserData} />}
 
             {/* Delete User Account */}
             <DeleteAccount />
+
+            {/* Logout */}
+            <Logout />
 
         </Box>
 
