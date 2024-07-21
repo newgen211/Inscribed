@@ -196,6 +196,7 @@ export default function DashboardDrawer(props:IDashboardDrawerProps) {
         finally {
           setLoading(false);
           handleClose();
+          location.reload();
         }
       
     }, []); 
