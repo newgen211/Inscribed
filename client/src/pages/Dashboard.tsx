@@ -9,6 +9,8 @@ import DashboardDrawer, { DrawerHeader } from '../components/Dashboard/Dashboard
 import MobileTopAppbar from '../components/Dashboard/MobileTopAppbar';
 import BottomNavigationBar from '../components/Dashboard/BottomNavigationBar';
 import Settings from '../components/Dashboard/Settings/Settings';
+import Home from '../components/Dashboard/Home';
+
 
 /* Define Types and Interfaces  */
 
@@ -99,7 +101,7 @@ export default function Dashboard() {
       }
 
       // Attempt to fetch the user's data
-      const response: AxiosResponse<APIResponse> = await axios.get('/api/user/get-user-info', { headers: { Authorization: `Bearer ${token}` } });
+      const response: AxiosResponse<APIResponse> = await axios.get('https://inscribed-22337aee4c1b.herokuapp.com/api/user/get-user-info', { headers: { Authorization: `Bearer ${token}` } });
 
       // Store the user's infomation
       setUserData(response.data.data);
@@ -162,6 +164,7 @@ export default function Dashboard() {
     switch(currentTab) {
 
       case 0:
+        return <Home userInfo={userData} />;
       case 1:
       case 2:
       case 3:

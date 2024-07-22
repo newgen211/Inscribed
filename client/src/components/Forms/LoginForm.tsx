@@ -65,7 +65,7 @@ export default function LoginForm() {
         try {
 
             // Make axios post request to the api
-            const response = await axios.post('/api/auth/login', values);
+            const response = await axios.post('https://inscribed-22337aee4c1b.herokuapp.com/api/auth/login', values);
 
             // Upon success response, store the login token in local storage using the useAuth hook
             login(response.data.token);
